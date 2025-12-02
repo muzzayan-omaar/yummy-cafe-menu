@@ -18,7 +18,7 @@ export default function CafeMenu() {
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState("light");
   const [search, setSearch] = useState("");
-  const [activeCat, setActiveCat] = useState("All");
+  const [activeCat, setActiveCat] = useState("Top Seller");
   const [sort, setSort] = useState("recommended");
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -28,15 +28,16 @@ export default function CafeMenu() {
   const inc = useCartStore((s) => s.inc);
   const dec = useCartStore((s) => s.dec);
   const cartItems = useCartStore((s) => s.items);
-  const cartCount = useCartStore((s) => s.totalCount());
-  const cartTotal = useCartStore((s) => s.totalPrice());
+const cartCount = Object.values(orders).reduce((acc, it) => acc + it.qty, 0);
+
 
   // Fetch menu items
 useEffect(() => {
   const fetchMenu = async () => {
     try {
-      const res = await fetch(API.MENU);  // ✅ USE CONFIG
+      const res = await fetch(API.MENU);
       const data = await res.json();
+      console.log(data); // <-- Check what keys are actually returned
       setItems(data);
     } catch (err) {
       console.error("Failed to fetch menu:", err);
@@ -47,6 +48,7 @@ useEffect(() => {
 
   fetchMenu();
 }, []);
+
 
   // Theme toggle
   useEffect(() => {
@@ -67,10 +69,21 @@ useEffect(() => {
 const recommendedItems = items.slice(0, 5);
 
 
+const [toast, setToast] = useState("");
+
+// helper to show toast
+const showToast = (message) => {
+  setToast(message);
+  setTimeout(() => setToast(""), 1500); // hide after 1.5s
+};
+
 const handleAddToOrders = (item, change = 1) => {
   setOrders((prev) => {
     const currentQty = prev[item._id]?.qty || 0;
     const newQty = currentQty + change;
+
+    // Show toast only if adding
+    if (change > 0) showToast(` ${item.name} Added✅!`);
 
     if (newQty <= 0) {
       const updated = { ...prev };
@@ -87,6 +100,7 @@ const handleAddToOrders = (item, change = 1) => {
     };
   });
 };
+
 
 
   // Skeleton card
@@ -140,44 +154,49 @@ const handleAddToOrders = (item, change = 1) => {
 
 {/* AI Recommended Items */}
 <div>
-<SpecialsTitle />
+  <SpecialsTitle />
 
-<div className="flex gap-3 overflow-x-auto py-3 no-scrollbar">
-  {recommendedItems.map((it) => (
-    <div
-      key={it._id}
-      className="min-w-[150px] h-44 rounded-xl overflow-hidden relative shadow-md bg-gray-200 dark:bg-[#101d35]"
-    >
-      <img
-        src={it.img}
-        alt={it.name}
-        className="w-full h-full object-cover"
-      />
+  <div className="flex gap-3 overflow-x-auto py-3 no-scrollbar">
+    {recommendedItems.map((it) => {
+      const qty = orders[it._id]?.qty || 0;
+      const categoryEmoji = {
+        Coffee: "☕",
+        Tea: "🍵",
+        Pastries: "🥐",
+        Sandwiches: "🥪",
+        Desserts: "🍰",
+        "Cold Drinks": "🧊"
+      };
 
-      {/* Gradient bottom */}
-      <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-        <h3 className="text-white text-xs font-medium drop-shadow">
-          {it.name}
-        </h3>
-        <p className="text-white/80 text-[10px]">${it.price}</p>
-      </div>
-
-      {/* Add (+) Button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          handleAddToCart(it, 1, {});
-        }}
-        className="absolute bottom-2 right-2 w-7 h-7 flex items-center justify-center 
-        rounded-full bg-[#A7744A] hover:bg-[#916640] transition text-white shadow-lg"
-      >
-        +
-      </button>
-    </div>
-  ))}
+      return (
+        <div
+          key={it._id}
+          className="min-w-[150px] h-44 rounded-xl overflow-hidden relative shadow-md bg-gray-200 dark:bg-[#101d35] group cursor-pointer"
+          onClick={() => handleAddToOrders(it, 1)}
+        >
+          <img src={it.img} alt={it.name} className="w-full h-full object-cover" />
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+            <h3 className="text-white text-sm font-semibold drop-shadow-lg">{it.name}</h3>
+            <p className="text-white/90 text-xs italic drop-shadow-lg">
+              {categoryEmoji[it.category] || ""} {it.desc}
+            </p>
+            <p className="text-white/80 text-xs mt-1">${it.price}</p>
+          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToOrders(it, 1);
+            }}
+            className="absolute bottom-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#916640] text-white shadow-lg"
+          >
+            +
+          </button>
+        </div>
+      );
+    })}
+  </div>
 </div>
 
-</div>
 
 {/* Categories */}
 <div className="mt-4 flex items-center justify-between gap-3">
@@ -222,83 +241,123 @@ const handleAddToOrders = (item, change = 1) => {
             ? item.img.replace("/upload/", "/upload/c_fill,w_600,h_450/")
             : item.img;
 
+          const categoryEmoji = {
+            Coffee: "☕",
+            Tea: "🍵",
+            Pastries: "🥐",
+            Sandwiches: "🥪",
+            Desserts: "🍰",
+            "Cold Drinks": "🧊",
+          };
+
           return (
             <motion.div
               key={item._id}
               layout
               whileHover={{ scale: 1.02 }}
-              className="relative rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a]"
+              className="relative rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a] group"
             >
-              {/* Image */}
               <div
                 className="relative w-full aspect-[4/3] cursor-pointer"
-                onClick={() =>
-                  setSelected({ ...item, qty: qty > 0 ? qty : 1, comment: "" })
-                }
+                onClick={() => handleAddToOrders(item, 1)}
               >
-                <img
-                  src={imgUrl}
-                  alt={item.title}
-                  className="w-full h-full object-cover"
-                />
-
-                {/* Gradient fade */}
+                <img src={imgUrl} alt={item.name} className="w-full h-full object-cover" />
                 <div className="absolute bottom-0 inset-x-0 h-[60%] bg-gradient-to-t from-black/70 to-transparent"></div>
-
-                {/* Name + Price */}
                 <div className="absolute bottom-2 left-2">
-                  <h4 className="text-white font-semibold text-sm drop-shadow-lg">
-                    {item.title}
-                  </h4>
-                  <p className="text-white/90 text-xs drop-shadow-lg">
-                    ${item.price.toFixed(2)}
+                  <h4 className="text-white font-semibold text-sm drop-shadow-lg">{item.name}</h4>
+                  <p className="text-white/90 text-xs italic drop-shadow-lg">
+                    {categoryEmoji[item.category] || ""} {item.desc}
                   </p>
+                  <p className="text-white/80 text-xs mt-1">${item.price.toFixed(2)}</p>
                 </div>
               </div>
-
-              {/* Qty Selector or + Button */}
-              <div className="absolute bottom-2 right-2 z-20">
-                {qty > 0 ? (
-                  <div className="flex items-center gap-2 bg-white dark:bg-[#1f2d47] rounded-full px-3 py-1 shadow-lg">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToOrders(item, -1);
-                      }}
-                      className="text-lg font-bold text-gray-700 dark:text-gray-200"
-                    >
-                      −
-                    </button>
-                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">
-                      {qty}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToOrders(item, +1);
-                      }}
-                      className="text-lg font-bold text-gray-700 dark:text-gray-200"
-                    >
-                      +
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddToOrders(item, +1);
-                    }}
-                    className="w-9 h-9 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#8e6340] text-white shadow-xl transition"
-                  >
-                    +
-                  </button>
-                )}
-              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToOrders(item, 1);
+                }}
+                className="absolute bottom-2 right-2 w-9 h-9 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#8e6340] text-white shadow-xl transition"
+              >
+                +
+              </button>
             </motion.div>
           );
         })}
+
+    {/* Orders Drawer */}
+    <AnimatePresence>
+      {ordersOpen && (
+        <motion.div
+          initial={{ x: 300 }}
+          animate={{ x: 0 }}
+          exit={{ x: 300 }}
+          className="fixed top-0 right-0 z-50 h-full w-80 bg-white dark:bg-[#0b1020] shadow-xl flex flex-col"
+        >
+          {/* Header */}
+          <div className="p-4 flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
+            <h2 className="font-semibold text-lg">Your Orders</h2>
+            <button onClick={() => setOrdersOpen(false)}>
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Orders List */}
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+            {Object.values(orders).length === 0 && (
+              <p className="text-gray-500 text-sm">No items yet</p>
+            )}
+            {Object.values(orders).map((it) => (
+              <div
+                key={it._id}
+                className="flex justify-between items-center bg-gray-100 dark:bg-[#14233a] rounded-lg p-2"
+              >
+                <div>
+                  <h4 className="text-sm font-semibold">{it.name}</h4>
+                  <p className="text-xs text-gray-500">
+                    ${it.price.toFixed(2)} × {it.qty} = ${(it.price * it.qty).toFixed(2)}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setOrders((prev) => {
+                      const updated = { ...prev };
+                      delete updated[it._id];
+                      return updated;
+                    });
+                  }}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Total */}
+          <div className="p-4 border-t border-gray-300 dark:border-gray-700">
+            <p className="font-semibold">
+              Total: ${Object.values(orders).reduce((acc, cur) => acc + cur.price * cur.qty, 0).toFixed(2)}
+            </p>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+
+    {/* Toast */}
+{toast && (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 20 }}
+    className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-lg shadow-lg z-50 font-semibold flex items-center gap-2"
+  >
+    <span>✨</span> {toast}
+  </motion.div>
+)}
+
   </div>
 </main>
+
 
 
         {/* Footer */}
