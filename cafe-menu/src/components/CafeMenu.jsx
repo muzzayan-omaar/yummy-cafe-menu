@@ -56,14 +56,23 @@ useEffect(() => {
   }, [theme]);
 
   // Filtered items
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    let res = items.filter((it) => activeCat === "All" ? true : it.category === activeCat);
-    if (q) res = res.filter((it) => it.title.toLowerCase().includes(q) || it.desc.toLowerCase().includes(q));
-    if (sort === "price-asc") res = res.sort((a, b) => a.price - b.price);
-    if (sort === "price-desc") res = res.sort((a, b) => b.price - a.price);
-    return res;
-  }, [items, activeCat, search, sort]);
+const filtered = useMemo(() => {
+  const q = search.trim().toLowerCase();
+  let res = items.filter(it => activeCat === "All" ? true : it.category === activeCat);
+
+  if (q) {
+    res = res.filter(it => 
+      (it.title?.toLowerCase().includes(q)) || 
+      (it.desc?.toLowerCase().includes(q))
+    );
+  }
+
+  if (sort === "price-asc") res = res.sort((a,b) => a.price - b.price);
+  if (sort === "price-desc") res = res.sort((a,b) => b.price - a.price);
+
+  return res;
+}, [items, activeCat, search, sort]);
+
 
   // AI Recommended Items (simple example: first 5 items)
 const recommendedItems = items.slice(0, 5);
