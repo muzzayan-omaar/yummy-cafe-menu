@@ -2,9 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Moon, Sun, ClipboardList, Plus, X } from "lucide-react";
 import { useCartStore } from "../store/useCartStore";
+import { API } from "../config";
 
-const API_URL = "http://localhost:5000/api/menu"; 
 const ALL_CATEGORIES = ["Top Seller", "Coffee", "Tea", "Pastries", "Sandwiches", "Desserts", "Cold Drinks"];
+
+
 
 
 export default function CafeMenu() {
@@ -27,20 +29,21 @@ export default function CafeMenu() {
   const cartTotal = useCartStore((s) => s.totalPrice());
 
   // Fetch menu items
-  useEffect(() => {
-    const fetchMenu = async () => {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        setItems(data);
-      } catch (err) {
-        console.error("Failed to fetch menu:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMenu();
-  }, []);
+useEffect(() => {
+  const fetchMenu = async () => {
+    try {
+      const res = await fetch(API.MENU);  // ✅ USE CONFIG
+      const data = await res.json();
+      setItems(data);
+    } catch (err) {
+      console.error("Failed to fetch menu:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchMenu();
+}, []);
 
   // Theme toggle
   useEffect(() => {
