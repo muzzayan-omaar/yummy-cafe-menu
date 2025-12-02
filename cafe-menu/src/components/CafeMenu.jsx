@@ -209,96 +209,97 @@ const handleAddToOrders = (item, change = 1) => {
 
 
         {/* Main Grid */}
-        <main className="mt-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-{loading
-  ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
-  : filtered.map((item) => {
-      const qty = orders[item._id]?.qty || 0;
+{/* Main Grid */}
+<main className="mt-2">
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {loading
+      ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
+      : filtered.map((item) => {
+          const qty = orders[item._id]?.qty || 0;
 
-      return (
-        <motion.div
-          key={item._id}
-          layout
-          whileHover={{ scale: 1.02 }}
-          className="relative rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a]"
-        >
-          {/* Image */}
-          <div
-            className="relative h-40 w-full"
-            onClick={() =>
-              setSelected({ ...item, qty: qty > 0 ? qty : 1, comment: "" })
-            }
-          >
-            <img
-              src={item.img}
-              alt={item.title}
-              className="w-full h-full object-cover"
-            />
+          // Use Cloudinary c_fill to ensure uniform cropping
+          const imgUrl = item.img.includes("cloudinary")
+            ? item.img.replace("/upload/", "/upload/c_fill,w_600,h_450/")
+            : item.img;
 
-            {/* Gradient fade */}
-            <div className="absolute bottom-0 inset-x-0 h-[60%] bg-gradient-to-t from-black/70 to-transparent"></div>
-
-            {/* Name + Price */}
-            <div className="absolute bottom-2 left-2">
-              <h4 className="text-white font-semibold text-sm drop-shadow-lg">
-                {item.title}
-              </h4>
-              <p className="text-white/90 text-xs drop-shadow-lg">
-                ${item.price.toFixed(2)}
-              </p>
-            </div>
-          </div>
-
-          {/* Qty Selector or + Button */}
-          <div className="absolute bottom-2 right-2 z-20">
-            {qty > 0 ? (
-              <div className="flex items-center gap-2 bg-white dark:bg-[#1f2d47] rounded-full px-3 py-1 shadow-lg">
-                {/* - BUTTON */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddToOrders(item, -1);
-                  }}
-                  className="text-lg font-bold text-gray-700 dark:text-gray-200"
-                >
-                  −
-                </button>
-
-                {/* QTY */}
-                <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">
-                  {qty}
-                </span>
-
-                {/* + BUTTON */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddToOrders(item, +1);
-                  }}
-                  className="text-lg font-bold text-gray-700 dark:text-gray-200"
-                >
-                  +
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddToOrders(item, +1);
-                }}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#8e6340] text-white shadow-xl transition"
+          return (
+            <motion.div
+              key={item._id}
+              layout
+              whileHover={{ scale: 1.02 }}
+              className="relative rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a]"
+            >
+              {/* Image */}
+              <div
+                className="relative w-full aspect-[4/3] cursor-pointer"
+                onClick={() =>
+                  setSelected({ ...item, qty: qty > 0 ? qty : 1, comment: "" })
+                }
               >
-                +
-              </button>
-            )}
-          </div>
-        </motion.div>
-      );
-    })}
+                <img
+                  src={imgUrl}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
 
-          </div>
-        </main>
+                {/* Gradient fade */}
+                <div className="absolute bottom-0 inset-x-0 h-[60%] bg-gradient-to-t from-black/70 to-transparent"></div>
+
+                {/* Name + Price */}
+                <div className="absolute bottom-2 left-2">
+                  <h4 className="text-white font-semibold text-sm drop-shadow-lg">
+                    {item.title}
+                  </h4>
+                  <p className="text-white/90 text-xs drop-shadow-lg">
+                    ${item.price.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+
+              {/* Qty Selector or + Button */}
+              <div className="absolute bottom-2 right-2 z-20">
+                {qty > 0 ? (
+                  <div className="flex items-center gap-2 bg-white dark:bg-[#1f2d47] rounded-full px-3 py-1 shadow-lg">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToOrders(item, -1);
+                      }}
+                      className="text-lg font-bold text-gray-700 dark:text-gray-200"
+                    >
+                      −
+                    </button>
+                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                      {qty}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToOrders(item, +1);
+                      }}
+                      className="text-lg font-bold text-gray-700 dark:text-gray-200"
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToOrders(item, +1);
+                    }}
+                    className="w-9 h-9 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#8e6340] text-white shadow-xl transition"
+                  >
+                    +
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
+  </div>
+</main>
+
 
         {/* Footer */}
         <footer className="mt-12 text-center text-xs text-gray-500 p-4">Designed with ♥ — RayWebSolutions</footer>
