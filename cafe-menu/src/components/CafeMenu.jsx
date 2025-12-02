@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, Moon, Sun, ClipboardList, Plus, X } from "lucide-react";
 import { useCartStore } from "../store/useCartStore";
 import { API } from "../config";
+import { FaCoffee } from "react-icons/fa";
+import Greeting from "../components/Greeting";
+import SpecialsTitle from "../components/SpecialsTitle";
 
 const ALL_CATEGORIES = ["Top Seller", "Coffee", "Tea", "Pastries", "Sandwiches", "Desserts", "Cold Drinks"];
 
@@ -103,8 +106,9 @@ const handleAddToOrders = (item, change = 1) => {
         {/* Header */}
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-300 to-orange-300 flex items-center justify-center text-lg font-bold text-white">R</div>
-            <div>
+           <div className="w-10 h-10 rounded-xl bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+  <FaCoffee size={20} className="text-gray-800 dark:text-gray-200" />
+</div><div>
               <h1 className="font-semibold">Ray Café</h1>
               <p className="text-xs text-gray-500">Brewed Fresh. Served Warm.</p>
             </div>
@@ -120,12 +124,6 @@ const handleAddToOrders = (item, change = 1) => {
               />
             </div>
             <button
-              onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
-              className="p-2 rounded-full bg-white/70 dark:bg-white/5"
-            >
-              {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
-            <button
               onClick={() => setOrdersOpen(true)}
               className="relative hidden md:inline-flex p-2 rounded-full bg-white/70 dark:bg-white/5"
             >
@@ -135,14 +133,14 @@ const handleAddToOrders = (item, change = 1) => {
           </div>
         </header>
 
+        <Greeting />
+
 
 
 
 {/* AI Recommended Items */}
 <div>
-  <h2 className="text-lg font-semibold text-black dark:text-white mb-2">
-    AI Recommended
-  </h2>
+<SpecialsTitle />
 
 <div className="flex gap-3 overflow-x-auto py-3 no-scrollbar">
   {recommendedItems.map((it) => (
