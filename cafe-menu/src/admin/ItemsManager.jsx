@@ -16,7 +16,7 @@ export default function ItemsManager() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/menu");
+      const res = await axios.get("https://yummy-cafe-menu-backend.onrender.com/api/menu");
       setItems(res.data);
     } catch (err) {
       toast.error("Failed to fetch items");
@@ -65,7 +65,7 @@ export default function ItemsManager() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/menu/${id}`, {
+      await axios.delete(`https://yummy-cafe-menu-backend.onrender.com/api/menu/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       toast.success("Item deleted!", {
