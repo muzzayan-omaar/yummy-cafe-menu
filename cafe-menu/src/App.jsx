@@ -1,11 +1,33 @@
 import React from "react";
-import CafeMenu from "./components/CafeMenu"; // adjust if your file is in pages/
+import { Routes, Route } from "react-router-dom";
+
+// Frontend
+import CafeMenu from "./components/CafeMenu";
+
+// Admin
+import AdminLayout from "./admin/AdminLayout";
+import AdminLogin from "./admin/AdminLogin";
+import Dashboard from "./admin/Dashboard";
+import ItemsManager from "./admin/ItemsManager";
+import ProtectedRoute from "./admin/ProtectedRoute";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <CafeMenu />
-    </div>
+    <Routes>
+      {/* Frontend Menu */}
+      <Route path="/" element={<CafeMenu />} />
+
+      {/* Admin Login */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+
+      {/* Protected Admin Pages */}
+      <Route path="/admin" element={<ProtectedRoute />}>
+        <Route element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="items" element={<ItemsManager />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
 

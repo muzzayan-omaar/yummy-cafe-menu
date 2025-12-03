@@ -1,0 +1,105 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+export default function ItemModal({ item, onClose, categories }) {
+  const [form, setForm] = useState({
+    name: item?.name || "",
+    img: item?.img || "",
+    description: item?.description || "",
+    cost: item?.price || "",
+    category: item?.category || (categories[0] || ""),
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (item) {
+        // Edit existing
+        await axios.put(`http://localhost:5000/api/menu/${item._id}`, form, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        });
+      } else {
+        // Add new
+        await axios.post("http://localhost:5000/api/menu", form, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        });
+      }
+      onClose();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white/10 backdrop-blur-3xl border border-white/20 p-6 rounded-2xl w-full max-w-md shadow-xl">
+        <h3 className="text-xl font-semibold text-white mb-4">{item ? "Edit Item" : "Add Item"}</h3>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Name"
+            className="p-2 rounded bg-white/20 text-white placeholder-white/70 outline-none caret-white"
+          />
+          <input
+            name="img"
+            value={form.img}
+            onChange={handleChange}
+            placeholder="Image URL"
+            className="p-2 rounded bg-white/20 text-white placeholder-white/70 outline-none caret-white"
+          />
+          <input
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Description"
+            className="p-2 rounded bg-white/20 text-white placeholder-white/70 outline-none caret-white"
+          />
+          <input
+            name="price"
+            type="number"
+            value={form.price}
+            onChange={handleChange}
+            placeholder="Cost"
+            className="p-2 rounded bg-white/20 text-white placeholder-white/70 outline-none caret-white"
+          />
+
+          {/* Category select dropdown */}
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            className="p-2 rounded bg-white/20 text-dark placeholder-white/70 outline-none caret-white"
+          >
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+
+          <div className="flex justify-end gap-2 mt-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded bg-white/20 text-white hover:bg-white/30 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded bg-[#A7744A] hover:bg-[#8e6340] text-white transition"
+            >
+              {item ? "Save" : "Add"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
