@@ -16,6 +16,8 @@ const ALL_CATEGORIES = ["Top Seller", "Coffee", "Tea", "Pastries", "Sandwiches",
 
 
 export default function CafeMenu() {
+  const { t, i18n } = useTranslation();
+
     const [orders, setOrders] = useState({});
 
   const [loading, setLoading] = useState(true);
@@ -386,7 +388,7 @@ const handleAddToOrders = (item, change = 1) => {
 
         {/* Footer */}
         <footer className="mt-12 text-center text-xs text-gray-500 p-4">
-  {t("footer")}
+  {t("Designed by Raywebsolutions")}
 </footer>
     </div>
 
