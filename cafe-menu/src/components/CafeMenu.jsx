@@ -6,6 +6,9 @@ import { API } from "../config";
 import { FaCoffee } from "react-icons/fa";
 import Greeting from "../components/Greeting";
 import SpecialsTitle from "../components/SpecialsTitle";
+import { useTranslation } from "react-i18next";
+
+
 
 const ALL_CATEGORIES = ["Top Seller", "Coffee", "Tea", "Pastries", "Sandwiches", "Desserts", "Cold Drinks"];
 
@@ -48,6 +51,11 @@ useEffect(() => {
 
   fetchMenu();
 }, []);
+
+useEffect(() => {
+  document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
+}, [i18n.language]);
+
 
 
   // Theme toggle
@@ -132,8 +140,8 @@ const handleAddToOrders = (item, change = 1) => {
            <div className="w-10 h-10 rounded-xl bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
   <FaCoffee size={20} className="text-gray-800 dark:text-gray-200" />
 </div><div>
-              <h1 className="font-semibold">Ray Café</h1>
-              <p className="text-xs text-gray-500">Brewed Fresh. Served Warm.</p>
+<h1 className="font-semibold">{t("WHY Cafe")}</h1>
+<p className="text-xs text-gray-500">{t("Brewed Fresh, Served warm")}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -142,7 +150,8 @@ const handleAddToOrders = (item, change = 1) => {
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search"
+                placeholder={t("search")}
+
                 className="ml-2 bg-transparent outline-none text-sm w-36"
               />
             </div>
@@ -304,7 +313,8 @@ const handleAddToOrders = (item, change = 1) => {
         >
           {/* Header */}
           <div className="p-4 flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
-            <h2 className="font-semibold text-lg">Your Orders</h2>
+<h2 className="font-semibold text-lg">{t("your_orders")}</h2>
+
             <button onClick={() => setOrdersOpen(false)}>
               <X size={20} />
             </button>
@@ -313,7 +323,8 @@ const handleAddToOrders = (item, change = 1) => {
           {/* Orders List */}
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
             {Object.values(orders).length === 0 && (
-              <p className="text-gray-500 text-sm">No items yet</p>
+<p className="text-gray-500 text-sm">{t("no_items")}</p>
+
             )}
             {Object.values(orders).map((it) => (
               <div
@@ -344,9 +355,13 @@ const handleAddToOrders = (item, change = 1) => {
 
           {/* Total */}
           <div className="p-4 border-t border-gray-300 dark:border-gray-700">
-            <p className="font-semibold">
-              Total: ${Object.values(orders).reduce((acc, cur) => acc + cur.price * cur.qty, 0).toFixed(2)}
-            </p>
+<p className="font-semibold">
+  {t("total")}: $
+  {Object.values(orders)
+    .reduce((acc, cur) => acc + cur.price * cur.qty, 0)
+    .toFixed(2)}
+</p>
+
           </div>
         </motion.div>
       )}
@@ -370,8 +385,10 @@ const handleAddToOrders = (item, change = 1) => {
 
 
         {/* Footer */}
-        <footer className="mt-12 text-center text-xs text-gray-500 p-4">Designed with ♥ — RayWebSolutions</footer>
-      </div>
+        <footer className="mt-12 text-center text-xs text-gray-500 p-4">
+  {t("footer")}
+</footer>
+    </div>
 
       {/* Mobile sticky orders button */}
       <div className="fixed bottom-20 right-4 z-40 md:hidden">
@@ -386,6 +403,17 @@ const handleAddToOrders = (item, change = 1) => {
 
       {/* Orders Drawer & Selected Modal remain unchanged */}
       {/* ...You can paste your previous AnimatePresence code here... */}
+      <button
+  onClick={() =>
+    i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
+  }
+  className="fixed top-4 right-4 z-50 px-3 py-1.5 rounded-full 
+             bg-white/30 dark:bg-black/30 backdrop-blur-md 
+             border border-white/30 text-sm font-semibold shadow-lg"
+>
+  {i18n.language === "en" ? "AR 🇸🇦" : "EN 🇬🇧"}
+</button>
+
     </div>
   );
 }

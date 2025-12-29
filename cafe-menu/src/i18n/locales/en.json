@@ -1,0 +1,19 @@
+{
+  "menu": "Menu",
+  "add_to_cart": "Add to cart",
+  "cart": "Cart",
+  "total": "Total",
+  "checkout": "Checkout",
+  "login": "Login",
+  "logout": "Logout",
+  "admin_dashboard": "Dashboard",
+  "items": "Items",
+  "add_item": "Add Item",
+  "edit": "Edit",
+  "delete": "Delete",
+  "search": "Search",
+  "no_items": "No items yet",
+  "recommended": "Recommended",
+  "price": "Price"
+
+}
