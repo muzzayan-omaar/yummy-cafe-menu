@@ -227,32 +227,32 @@ const handleAddToOrders = (item, change = 1) => {
       };
 
       return (
-        <div
-          key={it._id}
-          className="min-w-[150px] h-44 rounded-xl overflow-hidden relative shadow-md bg-gray-200 dark:bg-[#101d35] group cursor-pointer"
-          onClick={() => handleAddToOrders(it, 1)}
-        >
-          <img src={it.img} alt={it.name} className="w-full h-full object-cover" />
-          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-            <h3 className="text-white text-sm font-semibold drop-shadow-lg">{it.name}</h3>
-            <p className="text-white/90 text-xs italic drop-shadow-lg">
-              {categoryEmoji[it.category] || ""} {it.desc}
-            </p>
-<p className="text-white/80 text-xs mt-1">
-  {formatPrice(it.price, i18n.language)}
-</p>
+<div
+  key={it._id}
+  className="min-w-[150px] h-44 rounded-xl overflow-hidden relative shadow-md bg-gray-200 dark:bg-[#101d35] group"
+>
+  <img src={it.img} alt={it.name} className="w-full h-full object-cover" />
+  
+  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+    <h3 className="text-white text-sm font-semibold drop-shadow-lg">{it.name}</h3>
+    <p className="text-white/90 text-xs italic drop-shadow-lg">
+      {categoryEmoji[it.category] || ""} {it.desc}
+    </p>
+    <p className="text-white/80 text-xs mt-1">{formatPrice(it.price, i18n.language)}</p>
+  </div>
 
-          </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddToOrders(it, 1);
-            }}
-            className="absolute bottom-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#916640] text-white shadow-lg"
-          >
-            +
-          </button>
-        </div>
+  {/* + Button */}
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      handleAddToOrders(it, 1);
+    }}
+    className="absolute bottom-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#916640] text-white shadow-lg"
+  >
+    +
+  </button>
+</div>
+
       );
     })}
   </div>
