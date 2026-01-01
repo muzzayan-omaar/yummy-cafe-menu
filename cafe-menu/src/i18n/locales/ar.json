@@ -14,5 +14,33 @@
     "search": "بحث",
   "no_items": "لا توجد عناصر",
   "recommended": "مقترح",
-  "price": "السعر"
+  "price": "السعر",
+  "Good_Evening": "مساء الخير",
+  "Good_Morning": "صباح الخير",
+  "Good_Afternoon": "مساء الخير",
+  "Brewed_Fresh": "مُحضَّر طازجًا",
+"Served_Warm": "يُقدَّم دافئًا",
+  "Sunday": "الأحد",
+  "Monday": "الاثنين",
+  "Tuesday": "الثلاثاء",
+  "Wednesday": "الأربعاء",
+  "Thursday": "الخميس",
+  "Friday": "الجمعة",
+  "Saturday": "السبت",
+  "Days_Picks": "اختيارات {{day}}",
+  "Coffee": "قهوة",
+"Tea": "شاي",
+"Pastries": "معجنات",
+"Sandwiches": "سندويشات",
+"Desserts": "حلويات",
+"Cold Drinks": "مشروبات باردة",
+"recommended": "مقترح",
+"price_low_high": "السعر: من الأقل إلى الأعلى",
+"price_high_low": "السعر: من الأعلى إلى الأقل",
+"added": "تمت الإضافة",
+"your_orders": "طلباتك",
+"designed_by": "تم التصميم بواسطة RayWebSolutions"
+
+
+
 }

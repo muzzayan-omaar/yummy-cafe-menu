@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function SpecialsTitle() {
+  const { t } = useTranslation();
+
   const getDaySpecial = () => {
     const days = [
       "Sunday",
@@ -11,8 +14,13 @@ export default function SpecialsTitle() {
       "Friday",
       "Saturday",
     ];
-    const today = new Date().getDay(); // 0 = Sunday, 1 = Monday, etc.
-    return `${days[today]}'s picks`;
+
+    const todayIndex = new Date().getDay();
+    const dayKey = days[todayIndex];
+
+    return t("Days_Picks", {
+      day: t(dayKey),
+    });
   };
 
   return (

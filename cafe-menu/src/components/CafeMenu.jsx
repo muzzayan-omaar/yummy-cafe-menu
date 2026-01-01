@@ -83,6 +83,17 @@ const filtered = useMemo(() => {
   return res;
 }, [items, activeCat, search, sort]);
 
+const formatPrice = (amount, language) => {
+  return new Intl.NumberFormat(
+    language === "ar" ? "ar-AE" : "en-AE",
+    {
+      style: "currency",
+      currency: "AED",
+    }
+  ).format(amount);
+};
+
+
 
   // AI Recommended Items (simple example: first 5 items)
 const recommendedItems = items.slice(0, 5);
@@ -102,7 +113,8 @@ const handleAddToOrders = (item, change = 1) => {
     const newQty = currentQty + change;
 
     // Show toast only if adding
-    if (change > 0) showToast(` ${item.name} Added✅!`);
+    if (change > 0) showToast(`${item.name} ${t("added")} ✅`);
+
 
     if (newQty <= 0) {
       const updated = { ...prev };
@@ -143,7 +155,10 @@ const handleAddToOrders = (item, change = 1) => {
   <FaCoffee size={20} className="text-gray-800 dark:text-gray-200" />
 </div><div>
 <h1 className="font-semibold">{t("WHY Cafe")}</h1>
-<p className="text-xs text-gray-500">{t("Brewed Fresh, Served warm")}</p>
+<p className="text-xs text-gray-500">
+  {t("Brewed_Fresh")}, {t("Served_Warm")}
+</p>
+
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -200,7 +215,10 @@ const handleAddToOrders = (item, change = 1) => {
             <p className="text-white/90 text-xs italic drop-shadow-lg">
               {categoryEmoji[it.category] || ""} {it.desc}
             </p>
-            <p className="text-white/80 text-xs mt-1">${it.price}</p>
+<p className="text-white/80 text-xs mt-1">
+  {formatPrice(it.price, i18n.language)}
+</p>
+
           </div>
           <button
             onClick={(e) => {
@@ -221,17 +239,20 @@ const handleAddToOrders = (item, change = 1) => {
 {/* Categories */}
 <div className="mt-4 flex items-center justify-between gap-3">
   <div className="flex gap-2 overflow-x-auto py-2 scrollbar-hide">
-    {ALL_CATEGORIES.map((cat) => (
-      <button
-        key={cat}
-        onClick={() => setActiveCat(cat)}
-        className={`flex-shrink-0 px-3 py-1 rounded-full ${
-          activeCat === cat ? "bg-[#A7744A] text-white" : "bg-white/60 dark:bg-white/5"
-        }`}
-      >
-        {cat}
-      </button>
-    ))}
+{ALL_CATEGORIES.map((cat) => (
+  <button
+    key={cat}
+    onClick={() => setActiveCat(cat)}
+    className={`flex-shrink-0 px-3 py-1 rounded-full ${
+      activeCat === cat
+        ? "bg-[#A7744A] text-white"
+        : "bg-white/60 dark:bg-white/5"
+    }`}
+  >
+    {t(cat)}
+  </button>
+))}
+
   </div>
   <div className="hidden md:flex items-center gap-2">
     <select
@@ -239,9 +260,10 @@ const handleAddToOrders = (item, change = 1) => {
       onChange={(e) => setSort(e.target.value)}
       className="rounded-md px-2 py-1 bg-white/60 dark:bg-white/5 text-sm"
     >
-      <option value="recommended">Recommended</option>
-      <option value="price-asc">Price: Low → High</option>
-      <option value="price-desc">Price: High → Low</option>
+<option value="recommended">{t("recommended")}</option>
+<option value="price-asc">{t("price_low_high")}</option>
+<option value="price-desc">{t("price_high_low")}</option>
+
     </select>
   </div>
 </div>
@@ -336,7 +358,9 @@ const handleAddToOrders = (item, change = 1) => {
                 <div>
                   <h4 className="text-sm font-semibold">{it.name}</h4>
                   <p className="text-xs text-gray-500">
-                    ${it.price.toFixed(2)} × {it.qty} = ${(it.price * it.qty).toFixed(2)}
+{formatPrice(it.price, i18n.language)} × {it.qty} ={" "}
+{formatPrice(it.price * it.qty, i18n.language)}
+
                   </p>
                 </div>
                 <button
@@ -358,10 +382,15 @@ const handleAddToOrders = (item, change = 1) => {
           {/* Total */}
           <div className="p-4 border-t border-gray-300 dark:border-gray-700">
 <p className="font-semibold">
-  {t("total")}: $
-  {Object.values(orders)
-    .reduce((acc, cur) => acc + cur.price * cur.qty, 0)
-    .toFixed(2)}
+{t("total")}:{" "}
+{formatPrice(
+  Object.values(orders).reduce(
+    (acc, cur) => acc + cur.price * cur.qty,
+    0
+  ),
+  i18n.language
+)}
+
 </p>
 
           </div>
@@ -387,9 +416,10 @@ const handleAddToOrders = (item, change = 1) => {
 
 
         {/* Footer */}
-        <footer className="mt-12 text-center text-xs text-gray-500 p-4">
-  {t("Designed by Raywebsolutions")}
+<footer className="mt-12 text-center text-xs text-gray-500 p-4">
+  {t("designed_by")}
 </footer>
+
     </div>
 
       {/* Mobile sticky orders button */}

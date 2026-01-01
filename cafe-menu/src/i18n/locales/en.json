@@ -14,6 +14,33 @@
   "search": "Search",
   "no_items": "No items yet",
   "recommended": "Recommended",
-  "price": "Price"
+  "price": "Price",
+  "Good_Evening": "Good Evening",
+  "Good_Morning": "Good Morning",
+  "Good_Afternoon": "Good Afternoon",
+  "Brewed_Fresh": "Brewed Fresh",
+  "Served_Warm": "Served Warm",
+    "Sunday": "Sunday",
+  "Monday": "Monday",
+  "Tuesday": "Tuesday",
+  "Wednesday": "Wednesday",
+  "Thursday": "Thursday",
+  "Friday": "Friday",
+  "Saturday": "Saturday",
+  "Days_Picks": "{{day}}'s picks",
+  "Coffee": "Coffee",
+"Tea": "Tea",
+"Pastries": "Pastries",
+"Sandwiches": "Sandwiches",
+"Desserts": "Desserts",
+"Cold Drinks": "Cold Drinks",
+"recommended": "Recommended",
+"price_low_high": "Price: Low → High",
+"price_high_low": "Price: High → Low",
+"added": "Added",
+"your_orders": "Your Orders",
+"designed_by": "Designed by RayWebSolutions"
+
+
 
 }
