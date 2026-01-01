@@ -148,39 +148,62 @@ const handleAddToOrders = (item, change = 1) => {
     <div className="min-h-screen bg-gray-50 dark:bg-[#0b1020] text-gray-900 dark:text-gray-100">
       <div className="max-w-3xl mx-auto px-4 pb-36 pt-6">
 
-        {/* Header */}
-        <header className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-           <div className="w-10 h-10 rounded-xl bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
-  <FaCoffee size={20} className="text-gray-800 dark:text-gray-200" />
-</div><div>
-<h1 className="font-semibold">{t("WHY Cafe")}</h1>
-<p className="text-xs text-gray-500">
-  {t("Brewed_Fresh")}, {t("Served_Warm")}
-</p>
+{/* Header */}
+<header className="flex items-center justify-between">
+  {/* Left: Logo + Cafe name */}
+  <div className="flex items-center gap-3">
+    <div className="w-10 h-10 rounded-xl bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+      <FaCoffee size={20} className="text-gray-800 dark:text-gray-200" />
+    </div>
+    <div>
+      <h1 className="font-semibold">{t("WHY Cafe")}</h1>
+      <p className="text-xs text-gray-500">
+        {t("Brewed_Fresh")}, {t("Served_Warm")}
+      </p>
+    </div>
+  </div>
 
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="relative md:hidden flex items-center bg-white/60 dark:bg-white/5 rounded-full px-2 py-1">
-              <Search size={14} />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder={t("search")}
+  {/* Right: Search, Language toggle, Cart */}
+  <div className="flex items-center gap-2">
+    {/* Mobile Search + Language */}
+    <div className="flex items-center gap-2 md:hidden">
+      {/* Search */}
+      <div className="flex items-center bg-white/60 dark:bg-white/5 rounded-full px-2 py-1 flex-1">
+        <Search size={14} />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={t("search")}
+          className="ml-2 bg-transparent outline-none text-sm w-full"
+        />
+      </div>
 
-                className="ml-2 bg-transparent outline-none text-sm w-36"
-              />
-            </div>
-            <button
-              onClick={() => setOrdersOpen(true)}
-              className="relative hidden md:inline-flex p-2 rounded-full bg-white/70 dark:bg-white/5"
-            >
-              <ClipboardList size={18} />
-              {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5">{cartCount}</span>}
-            </button>
-          </div>
-        </header>
+      {/* Language toggle */}
+      <button
+        onClick={() =>
+          i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
+        }
+        className="px-3 py-1 rounded-full bg-[#A7744A] text-white text-xs font-semibold shadow-sm"
+      >
+        {i18n.language === "en" ? "AR 🇸🇦" : "EN 🇬🇧"}
+      </button>
+    </div>
+
+    {/* Desktop Cart button */}
+    <button
+      onClick={() => setOrdersOpen(true)}
+      className="relative hidden md:inline-flex p-2 rounded-full bg-white/70 dark:bg-white/5"
+    >
+      <ClipboardList size={18} />
+      {cartCount > 0 && (
+        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5">
+          {cartCount}
+        </span>
+      )}
+    </button>
+  </div>
+</header>
+
 
         <Greeting />
 
@@ -293,36 +316,36 @@ const handleAddToOrders = (item, change = 1) => {
           };
 
           return (
-            <motion.div
-              key={item._id}
-              layout
-              whileHover={{ scale: 1.02 }}
-              className="relative rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a] group"
-            >
-              <div
-                className="relative w-full aspect-[4/3] cursor-pointer"
-                onClick={() => handleAddToOrders(item, 1)}
-              >
-                <img src={imgUrl} alt={item.name} className="w-full h-full object-cover" />
-                <div className="absolute bottom-0 inset-x-0 h-[60%] bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div className="absolute bottom-2 left-2">
-                  <h4 className="text-white font-semibold text-sm drop-shadow-lg">{item.name}</h4>
-                  <p className="text-white/90 text-xs italic drop-shadow-lg">
-                    {categoryEmoji[item.category] || ""} {item.desc}
-                  </p>
-                  <p className="text-white/80 text-xs mt-1">${item.price.toFixed(2)}</p>
-                </div>
-              </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddToOrders(item, 1);
-                }}
-                className="absolute bottom-2 right-2 w-9 h-9 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#8e6340] text-white shadow-xl transition"
-              >
-                +
-              </button>
-            </motion.div>
+<motion.div
+  key={item._id}
+  layout
+  whileHover={{ scale: 1.02 }}
+  className="relative rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a] group"
+>
+  <div className="relative w-full aspect-[4/3]">
+    <img src={imgUrl} alt={item.name} className="w-full h-full object-cover" />
+    <div className="absolute bottom-0 inset-x-0 h-[60%] bg-gradient-to-t from-black/70 to-transparent"></div>
+    <div className="absolute bottom-2 left-2">
+      <h4 className="text-white font-semibold text-sm drop-shadow-lg">{item.name}</h4>
+      <p className="text-white/90 text-xs italic drop-shadow-lg">
+        {categoryEmoji[item.category] || ""} {item.desc}
+      </p>
+      <p className="text-white/80 text-xs mt-1">{formatPrice(item.price, i18n.language)}</p>
+    </div>
+  </div>
+
+  {/* Only the + button adds to cart now */}
+  <button
+    onClick={(e) => {
+      e.stopPropagation(); // good measure
+      handleAddToOrders(item, 1);
+    }}
+    className="absolute bottom-2 right-2 w-9 h-9 flex items-center justify-center rounded-full bg-[#A7744A] hover:bg-[#8e6340] text-white shadow-xl transition"
+  >
+    +
+  </button>
+</motion.div>
+
           );
         })}
 
@@ -435,16 +458,7 @@ const handleAddToOrders = (item, change = 1) => {
 
       {/* Orders Drawer & Selected Modal remain unchanged */}
       {/* ...You can paste your previous AnimatePresence code here... */}
-      <button
-  onClick={() =>
-    i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
-  }
-  className="fixed top-4 right-4 z-50 px-3 py-1.5 rounded-full 
-             bg-white/30 dark:bg-black/30 backdrop-blur-md 
-             border border-white/30 text-sm font-semibold shadow-lg"
->
-  {i18n.language === "en" ? "AR 🇸🇦" : "EN 🇬🇧"}
-</button>
+ 
 
     </div>
   );
