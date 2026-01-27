@@ -402,38 +402,18 @@ const handleAddToOrders = (item, change = 1) => {
 <p className="text-gray-500 text-sm">{t("no_items")}</p>
 
             )}
-            {Object.values(orders).map((it) => (
-              <div
-                key={it._id}
-                className="flex justify-between items-center bg-gray-100 dark:bg-[#14233a] rounded-lg p-2"
-              >
-                <div>
-                  <h4 className="text-sm font-semibold">{it.name}</h4>
-                  <p className="text-xs text-gray-500">
-{formatPrice(it.price, i18n.language)} × {it.qty} ={" "}
-{formatPrice(it.price * it.qty, i18n.language)}
+{Object.values(orders).map((it) => (
+  <div key={it._id} className="flex justify-between items-center bg-gray-100 dark:bg-[#14233a] rounded-lg p-2">
+    <div>
+      <h4 className="text-sm font-semibold">{it.name}</h4>
+      <p className="text-xs text-gray-500">
+        {formatPrice(it.price, i18n.language)} × {it.qty} = {formatPrice(it.price * it.qty, i18n.language)}
+      </p>
+    </div>
+    {/* No delete button */}
+  </div>
+))}
 
-                  </p>
-                </div>
-<button
-  onClick={() => {
-    setOrders((prev) => {
-      const updated = { ...prev };
-      delete updated[it._id];
-
-      // Sync updated orders to backend
-      syncOrderToBackend(updated);
-
-      return updated;
-    });
-  }}
-  className="text-red-500 hover:text-red-700"
->
-  <X size={16} />
-</button>
-
-              </div>
-            ))}
           </div>
 
           {/* Total */}
