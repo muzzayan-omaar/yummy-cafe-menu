@@ -441,14 +441,7 @@ const handleAddToOrders = (item, change = 1) => {
         <X size={16} />
       </button>
     )}
-    {orderPlaced && (
-  <button
-    onClick={() => setShowPayment(true)}
-    className="w-full mt-3 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold"
-  >
-    💳 {t("pay_bill")}
-  </button>
-)}
+
 
   </div>
 ))}
@@ -494,6 +487,14 @@ const handleAddToOrders = (item, change = 1) => {
     </p>
   )}
 </div>
+    {orderPlaced && (
+  <button
+    onClick={() => setShowPayment(true)}
+    className="w-full mt-3 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold"
+  >
+    💳 {t("pay_bill")}
+  </button>
+)}
 
         </motion.div>
       )}

@@ -7,10 +7,10 @@ export default function Greeting() {
   const getGreeting = () => {
     const hour = new Date().getHours();
 
-    if (hour >= 5 && hour < 12) return { key: "Good_Morning", emoji: "☀️" };
-    if (hour >= 12 && hour < 17) return { key: "Good_Afternoon", emoji: "🌤️" };
-    if (hour >= 17 && hour < 21) return { key: "Good_Evening", emoji: "🌇" };
-    return { key: "Good_Night", emoji: "🌙" };
+    if (hour >= 5 && hour < 12) return { key: "Good Morning", emoji: "☀️" };
+    if (hour >= 12 && hour < 17) return { key: "Good Afternoon", emoji: "🌤️" };
+    if (hour >= 17 && hour < 21) return { key: "Good Evening", emoji: "🌇" };
+    return { key: "Good Night", emoji: "🌙" };
   };
 
   const { key, emoji } = getGreeting();
