@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Moon, Sun, ClipboardList, Plus, X } from "lucide-react";
-import { useCartStore } from "../store/useCartStore";
 import { API } from "../config";
 import { FaCoffee } from "react-icons/fa";
 import Greeting from "../components/Greeting";
@@ -34,10 +33,6 @@ export default function CafeMenu() {
 
 
 
-  const add = useCartStore((s) => s.add);
-  const inc = useCartStore((s) => s.inc);
-  const dec = useCartStore((s) => s.dec);
-  const cartItems = useCartStore((s) => s.items);
 const cartCount = Object.values(orders).reduce((acc, it) => acc + it.qty, 0);
 
 const [searchParams] = useSearchParams();
@@ -64,21 +59,33 @@ useEffect(() => {
   fetchTableOrder();
 }, [tableNumber]);
 
+useEffect(() => {
+  if (!tableNumber) return;
 
+  const fetchTableOrder = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders/table/${tableNumber}`
+      );
+      const data = await res.json();
 
+      if (data?.items?.length) {
+        const mapped = {};
+        data.items.forEach(it => {
+          mapped[it._id] = it;
+        });
 
-
-// Fetch existing order for table
-useEffect(()=>{
-  if(!tableNumber) return;
-  fetch(`/api/tables/order/${tableNumber}`)
-    .then(res=>res.json())
-    .then(data=>{
-      if(data.items?.length){
-        data.items.forEach(item => add(item)); // populate cart
+        setOrders(mapped);
+        setOrderPlaced(data.status === "placed");
       }
-    });
+    } catch (err) {
+      console.error("Failed to load table order", err);
+    }
+  };
+
+  fetchTableOrder();
 }, [tableNumber]);
+
 
 
 
