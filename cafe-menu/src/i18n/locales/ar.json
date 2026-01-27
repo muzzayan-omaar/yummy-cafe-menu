@@ -39,7 +39,11 @@
 "price_high_low": "السعر: من الأعلى إلى الأقل",
 "added": "تمت الإضافة",
 "your_orders": "طلباتك",
-"designed_by": "تم التصميم بواسطة RayWebSolutions"
+"designed_by": "تم التصميم بواسطة RayWebSolutions",
+  "pay_bill": "ادفع الفاتورة",
+  "payment": "الدفع",
+  "amount_to_pay": "المبلغ المطلوب",
+  "close": "إغلاق"
 
 
 

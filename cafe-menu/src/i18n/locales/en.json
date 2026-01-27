@@ -39,7 +39,11 @@
 "price_high_low": "Price: High → Low",
 "added": "Added",
 "your_orders": "Your Orders",
-"designed_by": "Designed by RayWebSolutions"
+"designed_by": "Designed by RayWebSolutions",
+  "pay_bill": "Pay bill",
+  "payment": "Payment",
+  "amount_to_pay": "Amount to pay",
+  "close": "Close"
 
 
 

@@ -30,6 +30,8 @@ export default function CafeMenu() {
   const [selected, setSelected] = useState(null);
   const [ordersOpen, setOrdersOpen] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+
 
 
   const add = useCartStore((s) => s.add);
@@ -439,6 +441,15 @@ const handleAddToOrders = (item, change = 1) => {
         <X size={16} />
       </button>
     )}
+    {orderPlaced && (
+  <button
+    onClick={() => setShowPayment(true)}
+    className="w-full mt-3 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold"
+  >
+    💳 {t("pay_bill")}
+  </button>
+)}
+
   </div>
 ))}
 
@@ -487,6 +498,39 @@ const handleAddToOrders = (item, change = 1) => {
         </motion.div>
       )}
     </AnimatePresence>
+
+    {showPayment && (
+  <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+    <div className="bg-white dark:bg-[#0b1220] rounded-lg p-6 w-[90%] max-w-md">
+      <h2 className="text-lg font-bold mb-2">{t("payment")}</h2>
+
+      <p className="mb-4">
+        {t("amount_to_pay")}:{" "}
+        <strong>
+          {formatPrice(
+            Object.values(orders).reduce(
+              (acc, cur) => acc + cur.price * cur.qty,
+              0
+            ),
+            i18n.language
+          )}
+        </strong>
+      </p>
+
+      <p className="text-sm text-gray-500 mb-4">
+        Apple Pay · Google Pay · Cards
+      </p>
+
+      <button
+        onClick={() => setShowPayment(false)}
+        className="w-full py-2 rounded-md bg-gray-300 dark:bg-gray-700"
+      >
+        {t("close")}
+      </button>
+    </div>
+  </div>
+)}
+
 
     {/* Toast */}
 {toast && (
