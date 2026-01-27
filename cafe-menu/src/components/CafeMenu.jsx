@@ -7,6 +7,7 @@ import { FaCoffee } from "react-icons/fa";
 import Greeting from "../components/Greeting";
 import SpecialsTitle from "../components/SpecialsTitle";
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 
 
 
@@ -35,6 +36,20 @@ export default function CafeMenu() {
   const cartItems = useCartStore((s) => s.items);
 const cartCount = Object.values(orders).reduce((acc, it) => acc + it.qty, 0);
 
+const [searchParams] = useSearchParams();
+const tableNumber = searchParams.get("table"); // e.g., ?table=5
+
+// Fetch existing order for table
+useEffect(()=>{
+  if(!tableNumber) return;
+  fetch(`/api/tables/order/${tableNumber}`)
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.items?.length){
+        data.items.forEach(item => add(item)); // populate cart
+      }
+    });
+}, [tableNumber]);
 
   // Fetch menu items
 useEffect(() => {
@@ -64,6 +79,26 @@ useEffect(() => {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
+
+const syncOrderToBackend = async (currentOrders) => {
+  if(!tableNumber) return; // skip if table not defined
+  try {
+    const itemsArray = Object.values(currentOrders).map(it => ({
+      ...it,
+      qty: it.qty
+    }));
+    const total = itemsArray.reduce((acc, it) => acc + it.price * it.qty, 0);
+
+    await fetch(`/api/tables/order/${tableNumber}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: itemsArray, total }),
+    });
+  } catch(err) {
+    console.error("Failed to sync order:", err);
+  }
+};
+
 
   // Filtered items
 const filtered = useMemo(() => {
@@ -112,25 +147,19 @@ const handleAddToOrders = (item, change = 1) => {
     const currentQty = prev[item._id]?.qty || 0;
     const newQty = currentQty + change;
 
-    // Show toast only if adding
     if (change > 0) showToast(`${item.name} ${t("added")} ✅`);
 
+    const updated = { ...prev };
+    if(newQty <= 0) delete updated[item._id];
+    else updated[item._id] = { ...item, qty: newQty };
 
-    if (newQty <= 0) {
-      const updated = { ...prev };
-      delete updated[item._id];
-      return updated;
-    }
+    // Sync with backend
+    syncOrderToBackend(updated);
 
-    return {
-      ...prev,
-      [item._id]: {
-        ...item,
-        qty: newQty,
-      },
-    };
+    return updated;
   });
 };
+
 
 
 
@@ -386,18 +415,23 @@ const handleAddToOrders = (item, change = 1) => {
 
                   </p>
                 </div>
-                <button
-                  onClick={() => {
-                    setOrders((prev) => {
-                      const updated = { ...prev };
-                      delete updated[it._id];
-                      return updated;
-                    });
-                  }}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <X size={16} />
-                </button>
+<button
+  onClick={() => {
+    setOrders((prev) => {
+      const updated = { ...prev };
+      delete updated[it._id];
+
+      // Sync updated orders to backend
+      syncOrderToBackend(updated);
+
+      return updated;
+    });
+  }}
+  className="text-red-500 hover:text-red-700"
+>
+  <X size={16} />
+</button>
+
               </div>
             ))}
           </div>
