@@ -44,11 +44,28 @@ const [searchParams] = useSearchParams();
 const tableNumber = searchParams.get("table"); // e.g., ?table=5
 
 useEffect(() => {
-  const savedCart = localStorage.getItem(`cart_table_${tableNumber}`);
-  if (savedCart) {
-    setOrders(JSON.parse(savedCart));
-  }
+  const fetchTableOrder = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders/table/${tableNumber}`
+      );
+      const data = await res.json();
+
+      if (data) {
+        setOrders(data.items);
+        setOrderPlaced(data.orderPlaced); // ✅ CRITICAL
+        setOrderId(data._id); // (optional, but recommended)
+      }
+    } catch (error) {
+      console.error("Failed to load table order");
+    }
+  };
+
+  fetchTableOrder();
 }, [tableNumber]);
+
+
+
 
 
 // Fetch existing order for table
@@ -63,12 +80,7 @@ useEffect(()=>{
     });
 }, [tableNumber]);
 
-useEffect(() => {
-  localStorage.setItem(
-    `cart_table_${tableNumber}`,
-    JSON.stringify(orders)
-  );
-}, [orders, tableNumber]);
+
 
 
   // Fetch menu items
