@@ -475,11 +475,11 @@ const handleAddToOrders = (item, change = 1) => {
         });
 
         setOrderPlaced(true);
-        showToast(t("order_sent_success"));
+        showToast(t("order sent!"));
       }}
       className="w-full py-2 rounded-md bg-[#A7744A] hover:bg-[#916640] text-white font-semibold"
     >
-      {t("send_order")}
+      {t("send order")}
     </button>
   ) : (
     <p className="text-green-500 font-semibold flex items-center gap-2">
@@ -490,9 +490,9 @@ const handleAddToOrders = (item, change = 1) => {
     {orderPlaced && (
   <button
     onClick={() => setShowPayment(true)}
-    className="w-full mt-3 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold"
+    className="w-full mt-3 mt-3 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold"
   >
-    💳 {t("pay_bill")}
+    💳 {t("pay bill")}
   </button>
 )}
 
