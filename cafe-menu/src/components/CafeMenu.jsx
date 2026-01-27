@@ -29,6 +29,8 @@ export default function CafeMenu() {
   const [items, setItems] = useState([]);
   const [selected, setSelected] = useState(null);
   const [ordersOpen, setOrdersOpen] = useState(false);
+  const [orderPlaced, setOrderPlaced] = useState(false);
+
 
   const add = useCartStore((s) => s.add);
   const inc = useCartStore((s) => s.inc);
@@ -143,6 +145,8 @@ const showToast = (message) => {
 };
 
 const handleAddToOrders = (item, change = 1) => {
+  if (orderPlaced) return; // 🔒 lock cart after placing order
+
   setOrders((prev) => {
     const currentQty = prev[item._id]?.qty || 0;
     const newQty = currentQty + change;
@@ -150,15 +154,14 @@ const handleAddToOrders = (item, change = 1) => {
     if (change > 0) showToast(`${item.name} ${t("added")} ✅`);
 
     const updated = { ...prev };
-    if(newQty <= 0) delete updated[item._id];
+    if (newQty <= 0) delete updated[item._id];
     else updated[item._id] = { ...item, qty: newQty };
 
-    // Sync with backend
     syncOrderToBackend(updated);
-
     return updated;
   });
 };
+
 
 
 
@@ -403,34 +406,84 @@ const handleAddToOrders = (item, change = 1) => {
 
             )}
 {Object.values(orders).map((it) => (
-  <div key={it._id} className="flex justify-between items-center bg-gray-100 dark:bg-[#14233a] rounded-lg p-2">
+  <div
+    key={it._id}
+    className="flex justify-between items-center bg-gray-100 dark:bg-[#14233a] rounded-lg p-2"
+  >
     <div>
-      <h4 className="text-sm font-semibold">{it.name}</h4>
+      <h4 className="text-sm font-semibold flex items-center gap-2">
+        {it.name}
+        {orderPlaced && (
+          <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span>
+        )}
+      </h4>
       <p className="text-xs text-gray-500">
-        {formatPrice(it.price, i18n.language)} × {it.qty} = {formatPrice(it.price * it.qty, i18n.language)}
+        {formatPrice(it.price, i18n.language)} × {it.qty} ={" "}
+        {formatPrice(it.price * it.qty, i18n.language)}
       </p>
     </div>
-    {/* No delete button */}
+
+    {/* ❌ Remove button disappears after order placed */}
+    {!orderPlaced && (
+      <button
+        onClick={() => {
+          setOrders((prev) => {
+            const updated = { ...prev };
+            delete updated[it._id];
+            syncOrderToBackend(updated);
+            return updated;
+          });
+        }}
+        className="text-red-500 hover:text-red-700"
+      >
+        <X size={16} />
+      </button>
+    )}
   </div>
 ))}
+
 
           </div>
 
           {/* Total */}
-          <div className="p-4 border-t border-gray-300 dark:border-gray-700">
-<p className="font-semibold">
-{t("total")}:{" "}
-{formatPrice(
-  Object.values(orders).reduce(
-    (acc, cur) => acc + cur.price * cur.qty,
-    0
-  ),
-  i18n.language
-)}
+<div className="p-4 border-t border-gray-300 dark:border-gray-700">
+  <p className="font-semibold mb-3">
+    {t("total")}:{" "}
+    {formatPrice(
+      Object.values(orders).reduce(
+        (acc, cur) => acc + cur.price * cur.qty,
+        0
+      ),
+      i18n.language
+    )}
+  </p>
 
-</p>
+  {!orderPlaced ? (
+    <button
+      onClick={async () => {
+        await fetch(`/api/tables/order/${tableNumber}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: Object.values(orders),
+            status: "placed",
+          }),
+        });
 
-          </div>
+        setOrderPlaced(true);
+        showToast(t("order_sent_success"));
+      }}
+      className="w-full py-2 rounded-md bg-[#A7744A] hover:bg-[#916640] text-white font-semibold"
+    >
+      {t("send_order")}
+    </button>
+  ) : (
+    <p className="text-green-500 font-semibold flex items-center gap-2">
+      ✅ {t("order_placed")}
+    </p>
+  )}
+</div>
+
         </motion.div>
       )}
     </AnimatePresence>
