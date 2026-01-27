@@ -43,6 +43,14 @@ const cartCount = Object.values(orders).reduce((acc, it) => acc + it.qty, 0);
 const [searchParams] = useSearchParams();
 const tableNumber = searchParams.get("table"); // e.g., ?table=5
 
+useEffect(() => {
+  const savedCart = localStorage.getItem(`cart_table_${tableNumber}`);
+  if (savedCart) {
+    setOrders(JSON.parse(savedCart));
+  }
+}, [tableNumber]);
+
+
 // Fetch existing order for table
 useEffect(()=>{
   if(!tableNumber) return;
@@ -54,6 +62,14 @@ useEffect(()=>{
       }
     });
 }, [tableNumber]);
+
+useEffect(() => {
+  localStorage.setItem(
+    `cart_table_${tableNumber}`,
+    JSON.stringify(orders)
+  );
+}, [orders, tableNumber]);
+
 
   // Fetch menu items
 useEffect(() => {
