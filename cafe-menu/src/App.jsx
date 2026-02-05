@@ -15,7 +15,9 @@ import ArabicAmbience from "./components/ArabicAmbience";
 function App() {
   return (
     <>
-      <ArabicAmbience />   {/* 👈 always rendered */}
+     
+      <ArabicAmbience mouseX={mousePos.x} mouseY={mousePos.y} />
+     <ArabicAmbience />   {/* 👈 always rendered */}
 
       <Routes>
         <Route path="/" element={<CafeMenu />} />

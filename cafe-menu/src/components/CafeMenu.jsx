@@ -45,6 +45,17 @@ export default function CafeMenu() {
     fetchMenu();
   }, []);
 
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+useEffect(() => {
+  const handleMouseMove = (e) => {
+    setMousePos({ x: e.clientX, y: e.clientY });
+  };
+  window.addEventListener("mousemove", handleMouseMove);
+  return () => window.removeEventListener("mousemove", handleMouseMove);
+}, []);
+
+
   /* ===================== RTL SUPPORT ===================== */
   useEffect(() => {
     document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
