@@ -168,7 +168,7 @@ useEffect(() => {
       onClick={() => setActiveCat(cat)}
       className={`relative px-4 py-1 rounded-full text-sm whitespace-nowrap transition ${
         activeCat === cat
-          ? "text-white font-semibold"
+          ? "text-white font-bold"
           : "text-gray-700 dark:text-gray-200"
       }`}
     >
