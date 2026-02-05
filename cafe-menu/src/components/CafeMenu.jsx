@@ -102,7 +102,7 @@ export default function CafeMenu() {
   }
 
   return (
-    <div className="relative min-h-screen bg-gray-50 dark:bg-[#0b1020] text-gray-900 dark:text-gray-100 overflow-hidden">
+<div className="relative min-h-screen text-gray-900 dark:text-gray-100">
 
 
 
