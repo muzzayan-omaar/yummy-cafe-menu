@@ -147,85 +147,103 @@ export default function CafeMenu() {
         <SpecialsTitle />
 
         {/* ===================== CATEGORIES ===================== */}
-        <div className="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
-          {ALL_CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCat(cat)}
-              className={`px-4 py-1 rounded-full text-sm whitespace-nowrap transition
-                ${
-                  activeCat === cat
-                    ? "bg-[#A7744A] text-white"
-                    : "bg-white/60 dark:bg-white/5"
-                }`}
-            >
-              {t(cat)}
-            </button>
-          ))}
-        </div>
+<div className="relative flex gap-2 overflow-x-auto py-3 scrollbar-hide">
+  <motion.div
+    className="absolute h-1 bg-[#A7744A] bottom-0 rounded-full"
+    layoutId="underline"
+  />
+  {ALL_CATEGORIES.map((cat, idx) => (
+    <button
+      key={cat}
+      onClick={() => setActiveCat(cat)}
+      className={`relative px-4 py-1 rounded-full text-sm whitespace-nowrap transition ${
+        activeCat === cat
+          ? "text-white font-semibold"
+          : "text-gray-700 dark:text-gray-200"
+      }`}
+    >
+      {t(cat)}
+    </button>
+  ))}
+</div>
+
 
         {/* ===================== MENU GRID ===================== */}
         <main className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
             : filtered.map((item) => (
-                <motion.div
-                  key={item._id}
-                  whileHover={{ scale: 1.03 }}
-                  className="rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a] cursor-pointer"
-                  onClick={() => setSelectedItem(item)}
-                >
-                  <img
-                    src={item.img}
-                    alt={item.name}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-3">
-                    <h4 className="font-semibold">{item.name}</h4>
-                    <p className="text-xs text-gray-500 line-clamp-2">{item.desc}</p>
-                    <p className="mt-1 text-sm font-semibold">
-                      {formatPrice(item.price)}
-                    </p>
-                  </div>
-                </motion.div>
+<motion.div
+  key={item._id}
+  whileHover={{ scale: 1.03, y: -4 }}
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ type: "spring", stiffness: 100, damping: 14 }}
+  className="rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a] cursor-pointer"
+  onClick={() => setSelectedItem(item)}
+>
+  <img
+    src={item.img}
+    alt={item.name}
+    className="w-full h-48 object-cover"
+  />
+  <div className="p-3">
+    <h4 className="font-semibold">{item.name}</h4>
+    <p className="text-xs text-gray-500 line-clamp-2">{item.desc}</p>
+    <p className="mt-1 text-sm font-semibold">{formatPrice(item.price)}</p>
+  </div>
+</motion.div>
+
               ))}
         </main>
 
-        {/* ===================== ITEM MODAL ===================== */}
-        <AnimatePresence>
-          {selectedItem && (
-            <motion.div
-              className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedItem(null)}
-            >
-              <motion.div
-                className="bg-white dark:bg-[#0b1524] rounded-xl overflow-hidden max-w-lg w-full"
-                initial={{ scale: 0.85 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.85 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <img
-                  src={selectedItem.img}
-                  alt={selectedItem.name}
-                  className="w-full h-64 object-cover"
-                />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold">{selectedItem.name}</h3>
-                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                    {selectedItem.desc}
-                  </p>
-                  <p className="mt-3 font-semibold">
-                    {formatPrice(selectedItem.price)}
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+{/* ===================== ITEM MODAL ===================== */}
+<AnimatePresence>
+  {selectedItem && (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={() => setSelectedItem(null)}
+    >
+      <motion.div
+        className="relative bg-white/90 dark:bg-[#0b1524]/90 backdrop-blur-xl rounded-2xl overflow-hidden max-w-lg w-[92%] shadow-2xl"
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        transition={{ type: "spring", stiffness: 120, damping: 18 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img
+          src={selectedItem.img}
+          alt={selectedItem.name}
+          className="w-full h-64 object-cover"
+        />
+
+        <div className="p-5">
+          <h3 className="text-xl font-semibold tracking-tight">
+            {selectedItem.name}
+          </h3>
+
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            {selectedItem.desc}
+          </p>
+
+          <p className="mt-4 text-lg font-semibold text-[#A7744A]">
+            {formatPrice(selectedItem.price)}
+          </p>
+        </div>
+
+        {/* Close hint */}
+        <span className="absolute top-3 right-4 text-xs text-gray-400">
+          Tap outside to close
+        </span>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
 
         <footer className="mt-12 text-center text-xs text-gray-500">
           {t("designed_by")}
