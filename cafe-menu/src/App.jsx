@@ -10,10 +10,14 @@ import AdminLogin from "./admin/AdminLogin";
 import Dashboard from "./admin/Dashboard";
 import ItemsManager from "./admin/ItemsManager";
 import ProtectedRoute from "./admin/ProtectedRoute";
+import ArabicAmbience from "./components/ArabicAmbience";
 
 function App() {
   return (
+    
     <Routes>
+
+        <ArabicAmbience />
       {/* Frontend Menu */}
       <Route path="/" element={<CafeMenu />} />
 
