@@ -38,7 +38,7 @@ export default function ArabicAmbience() {
 
       {/* Floating geometric pattern */}
       <motion.svg
-        className="absolute w-full h-full opacity-20"
+        className="absolute w-full h-full opacity-10"
         style={{ x: offsetX, y: offsetY }}
         viewBox="0 0 400 400"
         preserveAspectRatio="xMidYMid slice"
