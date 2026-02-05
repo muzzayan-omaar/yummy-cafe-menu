@@ -6,7 +6,7 @@ export default function ArabicAmbience() {
 
       {/* Islamic geometric pattern */}
       <svg
-        className="absolute inset-0 w-full h-full opacity-[0.035]"
+        className="absolute inset-0 w-full h-full opacity-[0.08]"
         viewBox="0 0 400 400"
         preserveAspectRatio="xMidYMid slice"
       >

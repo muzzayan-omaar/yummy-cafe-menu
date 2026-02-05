@@ -104,19 +104,7 @@ export default function CafeMenu() {
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-[#0b1020] text-gray-900 dark:text-gray-100 overflow-hidden">
 
-      {/* ===================== ARABIC AMBIENCE BACKGROUND ===================== */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <pattern id="arabicPattern" width="160" height="160" patternUnits="userSpaceOnUse">
-            <circle cx="80" cy="80" r="38" fill="none" stroke="#A7744A" strokeWidth="1" />
-            <path d="M80 0 L80 160 M0 80 L160 80" stroke="#A7744A" strokeWidth="0.6" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#arabicPattern)" opacity="0.035" />
-      </svg>
+
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 pb-12 pt-6">
 

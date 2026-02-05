@@ -14,25 +14,23 @@ import ArabicAmbience from "./components/ArabicAmbience";
 
 function App() {
   return (
-    
-    <Routes>
+    <>
+      <ArabicAmbience />   {/* 👈 always rendered */}
 
-        <ArabicAmbience />
-      {/* Frontend Menu */}
-      <Route path="/" element={<CafeMenu />} />
+      <Routes>
+        <Route path="/" element={<CafeMenu />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
 
-      {/* Admin Login */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-
-      {/* Protected Admin Pages */}
-      <Route path="/admin" element={<ProtectedRoute />}>
-        <Route element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="items" element={<ItemsManager />} />
+        <Route path="/admin" element={<ProtectedRoute />}>
+          <Route element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="items" element={<ItemsManager />} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </>
   );
 }
 
 export default App;
+
