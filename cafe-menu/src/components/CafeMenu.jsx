@@ -114,8 +114,6 @@ useEffect(() => {
 
   return (
 <div className="relative min-h-screen text-gray-900 dark:text-gray-100">
-  {/* ===== Arabic background ===== */}
-  <ArabicAmbience mouseX={mousePos.x} mouseY={mousePos.y} />
 
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 pb-12 pt-6">

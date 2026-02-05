@@ -15,7 +15,7 @@ import ArabicAmbience from "./components/ArabicAmbience";
 function App() {
   return (
     <>
-     <ArabicAmbience />   {/* 👈 always rendered */}
+     <ArabicAmbience />   {/* rendered */}
 
       <Routes>
         <Route path="/" element={<CafeMenu />} />
