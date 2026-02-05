@@ -121,9 +121,14 @@ useEffect(() => {
         {/* ===================== HEADER ===================== */}
         <header className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#A7744A]/20 flex items-center justify-center">
-              <FaCoffee size={20} />
-            </div>
+<div className="w-10 h-10 rounded-xl bg-[#A7744A]/20 flex items-center justify-center overflow-hidden">
+  <img
+    src="https://res.cloudinary.com/diszilwhc/image/upload/v1770321879/Screenshot_20260206-000319_Instagram_wngblp.jpg"
+    alt="Coffee"
+    className="w-6 h-6 object-contain"
+  />
+</div>
+
             <div>
               <h1 className="font-semibold">{t("WHY Cafe")}</h1>
               <p className="text-xs text-gray-500">
