@@ -2,7 +2,8 @@ export default function ArabicAmbience() {
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
       {/* Soft gradient base */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-amber-100" />
+<div className="absolute inset-0 bg-gradient-to-br from-[#F5EFEA] via-[#EFE6DD] to-[#E6D3C1]" />
+
 
       {/* Islamic geometric pattern */}
       <svg
@@ -20,7 +21,8 @@ export default function ArabicAmbience() {
             <path
               d="M40 0 L80 40 L40 80 L0 40 Z"
               fill="none"
-              stroke="#8B5E3C"
+             stroke="#6F4E37"
+
               strokeWidth="1"
             />
             <circle
@@ -46,7 +48,9 @@ export default function ArabicAmbience() {
         <path
           d="M0 200 C 200 100, 400 300, 600 180 S 900 120, 1200 200"
           fill="none"
-          stroke="#A66A3F"
+stroke="#5C3A21"
+
+
           strokeWidth="2"
         />
       </svg>
