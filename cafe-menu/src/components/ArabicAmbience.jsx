@@ -1,21 +1,45 @@
+// ArabicAmbience.jsx
 import { motion, useMotionValue, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 
-export default function ArabicAmbience({ mouseX = 0, mouseY = 0 }) {
-  // subtle movement offsets based on mouse
-  const offsetX = useTransform(mouseX, [0, window.innerWidth], [-10, 10]);
-  const offsetY = useTransform(mouseY, [0, window.innerHeight], [-10, 10]);
+export default function ArabicAmbience() {
+  const [winSize, setWinSize] = useState({ width: 0, height: 0 });
+
+  // Track window size safely
+  useEffect(() => {
+    const handleResize = () =>
+      setWinSize({ width: window.innerWidth, height: window.innerHeight });
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Mouse position
+  const mouseX = useMotionValue(winSize.width / 2);
+  const mouseY = useMotionValue(winSize.height / 2);
+
+  useEffect(() => {
+    const handleMouse = (e) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+    window.addEventListener("mousemove", handleMouse);
+    return () => window.removeEventListener("mousemove", handleMouse);
+  }, [mouseX, mouseY]);
+
+  // Transform for subtle parallax
+  const offsetX = useTransform(mouseX, [0, winSize.width || 1], [-10, 10]);
+  const offsetY = useTransform(mouseY, [0, winSize.height || 1], [-10, 10]);
 
   return (
-    <motion.div
-      className="fixed inset-0 -z-10 pointer-events-none overflow-hidden"
-      style={{ x: offsetX, y: offsetY }}
-    >
-      {/* Soft coffee-brown gradient base */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#f5e3d3] via-[#f9f4ef] to-[#d6b08f]" />
+    <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+      {/* Soft coffee gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-amber-100 to-amber-200" />
 
-      {/* Geometric pattern */}
-      <svg
-        className="absolute inset-0 w-full h-full opacity-[0.035]"
+      {/* Floating geometric pattern */}
+      <motion.svg
+        className="absolute w-full h-full opacity-20"
+        style={{ x: offsetX, y: offsetY }}
         viewBox="0 0 400 400"
         preserveAspectRatio="xMidYMid slice"
       >
@@ -38,17 +62,17 @@ export default function ArabicAmbience({ mouseX = 0, mouseY = 0 }) {
               r="28"
               fill="none"
               stroke="#8B5E3C"
-              strokeWidth="0.6"
+              strokeWidth="0.5"
             />
           </pattern>
         </defs>
-
         <rect width="100%" height="100%" fill="url(#arabicPattern)" />
-      </svg>
+      </motion.svg>
 
-      {/* Flowing arabic curves */}
-      <svg
-        className="absolute inset-0 w-full h-full opacity-[0.04]"
+      {/* Flowing subtle curves */}
+      <motion.svg
+        className="absolute w-full h-full opacity-15"
+        style={{ x: offsetX, y: offsetY }}
         viewBox="0 0 1000 400"
         preserveAspectRatio="none"
       >
@@ -58,7 +82,7 @@ export default function ArabicAmbience({ mouseX = 0, mouseY = 0 }) {
           stroke="#A66A3F"
           strokeWidth="2"
         />
-      </svg>
-    </motion.div>
+      </motion.svg>
+    </div>
   );
 }
