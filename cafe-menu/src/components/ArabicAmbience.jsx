@@ -10,8 +10,8 @@ export default function ArabicAmbience({ mouseX = 0, mouseY = 0 }) {
       className="fixed inset-0 -z-10 pointer-events-none overflow-hidden"
       style={{ x: offsetX, y: offsetY }}
     >
-      {/* Soft gradient base */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#f3e5d4] via-white to-[#f9f4ef]" />
+      {/* Soft coffee-brown gradient base */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#f5e3d3] via-[#f9f4ef] to-[#d6b08f]" />
 
       {/* Geometric pattern */}
       <svg
@@ -46,7 +46,7 @@ export default function ArabicAmbience({ mouseX = 0, mouseY = 0 }) {
         <rect width="100%" height="100%" fill="url(#arabicPattern)" />
       </svg>
 
-      {/* Flowing curves */}
+      {/* Flowing arabic curves */}
       <svg
         className="absolute inset-0 w-full h-full opacity-[0.04]"
         viewBox="0 0 1000 400"
