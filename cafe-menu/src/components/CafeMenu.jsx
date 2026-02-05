@@ -156,26 +156,25 @@ useEffect(() => {
         <Greeting />
         <SpecialsTitle />
 
-        {/* ===================== CATEGORIES ===================== */}
-<div className="relative flex gap-2 overflow-x-auto py-3 scrollbar-hide">
-  <motion.div
-    className="absolute h-1 bg-[#A7744A] bottom-0 rounded-full"
-    layoutId="underline"
-  />
-  {ALL_CATEGORIES.map((cat, idx) => (
-    <button
+<div className="relative flex gap-3 overflow-x-auto py-3 px-2 scrollbar-hide">
+  {ALL_CATEGORIES.map((cat) => (
+    <motion.button
       key={cat}
       onClick={() => setActiveCat(cat)}
-      className={`relative px-4 py-1 rounded-full text-sm whitespace-nowrap transition ${
-        activeCat === cat
-          ? "text-white font-bold"
-          : "text-gray-700 dark:text-gray-200"
-      }`}
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 200, damping: 15 }}
+      className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap shadow-sm
+        ${
+          activeCat === cat
+            ? "bg-[#A7744A] text-white shadow-lg"
+            : "bg-white/70 dark:bg-white/10 text-gray-700 dark:text-gray-200 hover:bg-[#A7744A]/20"
+        }`}
     >
       {t(cat)}
-    </button>
+    </motion.button>
   ))}
 </div>
+
 
 
         {/* ===================== MENU GRID ===================== */}
