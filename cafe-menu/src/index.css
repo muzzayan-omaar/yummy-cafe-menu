@@ -49,3 +49,45 @@ body {
 .greeting-font {
   font-family: 'Quicksand', sans-serif;
 }
+
+/* Arabic ambience background */
+.arabic-ambience {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(184, 134, 11, 0.06),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(139, 69, 19, 0.05),
+      transparent 45%
+    );
+}
+
+/* Subtle geometric overlay */
+.arabic-ambience::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://res.cloudinary.com/demo/image/upload/v1700000000/islamic-pattern-light.svg");
+  background-repeat: repeat;
+  background-size: 420px;
+  opacity: 0.035;
+}
+
+/* Flowing arabic lines */
+.arabic-ambience::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://res.cloudinary.com/demo/image/upload/v1700000000/arabic-curves.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90%;
+  opacity: 0.04;
+}
