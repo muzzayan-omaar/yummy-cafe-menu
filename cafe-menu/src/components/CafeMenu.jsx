@@ -100,16 +100,14 @@ useEffect(() => {
 /* ===================== SPLASH ===================== */
 if (splashVisible) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0b1020]">
-      <motion.video
+    <div className="fixed inset-0 bg-black z-50">
+      <video
         src="https://res.cloudinary.com/diszilwhc/video/upload/v1771933325/whycafe.uae_01a07df291a342a0_wvuwwi.mp4"
         autoPlay
         muted
         playsInline
-        loop
-        className="w-44 h-44 rounded-full object-cover shadow-2xl"
-        animate={{ scale: [1, 1.05, 1] }}
-        transition={{ repeat: Infinity, duration: 2 }}
+        className="w-full h-full object-cover"
+        onEnded={() => setSplashVisible(false)} // removes splash when video ends
       />
     </div>
   );
