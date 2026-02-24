@@ -114,7 +114,10 @@ if (splashVisible) {
 }
 
   return (
-<div className="relative min-h-screen text-gray-900 dark:text-gray-100">
+<div className="relative min-h-screen 
+  bg-gradient-to-br from-[#f8f6f3] via-white to-[#f1ebe5] 
+  dark:bg-gradient-to-br dark:from-[#0b1524] dark:via-[#0f1e33] dark:to-[#0b1524]
+  text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 pb-12 pt-6">
@@ -127,7 +130,7 @@ if (splashVisible) {
             </div>
             <div>
               <h1 className="font-semibold">{t("WHY Cafe")}</h1>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-600 dark:text-gray-300">
                 {t("Brewed_Fresh")}, {t("Served_Warm")}
               </p>
             </div>
@@ -140,7 +143,7 @@ if (splashVisible) {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t("search")}
-                className="ml-2 bg-transparent outline-none text-sm w-28"
+                className="bg-white/80 dark:bg-[#1a2a44]"
               />
             </div>
             <button
@@ -199,7 +202,7 @@ if (splashVisible) {
   />
   <div className="p-3">
     <h4 className="font-semibold">{item.name}</h4>
-    <p className="text-xs text-gray-500 line-clamp-2">{item.desc}</p>
+    <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">{item.desc}</p>
     <p className="mt-1 text-sm font-semibold">{formatPrice(item.price)}</p>
   </div>
 </motion.div>
@@ -255,7 +258,7 @@ if (splashVisible) {
 </AnimatePresence>
 
 
-        <footer className="mt-12 text-center text-xs text-gray-500">
+        <footer className="mt-12 text-center text-xs text-gray-600 dark:text-gray-300">
           {t("designed_by")}
         </footer>
       </div>
