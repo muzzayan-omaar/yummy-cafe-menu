@@ -19,25 +19,22 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    // Combine form state with isSpecial checkbox
     const payload = {
       ...form,
       price: form.price,
-      isSpecial,         
+      isSpecial,
     };
+
+    const baseUrl = "https://yummy-cafe-menu-backend.onrender.com/api/menu"; // <--- use deployed backend
 
     if (item) {
       // Edit existing
-      await axios.put(
-        `http://localhost:5000/api/menu/${item._id}`,
-        payload,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
-        }
-      );
+      await axios.put(`${baseUrl}/${item._id}`, payload, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+      });
     } else {
       // Add new
-      await axios.post("http://localhost:5000/api/menu", payload, {
+      await axios.post(baseUrl, payload, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
     }
