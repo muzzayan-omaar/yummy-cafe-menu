@@ -144,23 +144,14 @@ if (splashVisible) {
                 className="bg-white/80 dark:bg-[#1a2a44]"
               />
             </div>
-<button
-  onClick={() =>
-    i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
-  }
-  className="w-9 h-9 flex items-center justify-center 
-             rounded-full 
-             bg-white/80 dark:bg-[#1a2a44] 
-             border border-gray-200 dark:border-[#223555]
-             shadow-sm hover:scale-105 active:scale-95 
-             transition-all duration-200"
->
-  <img
-    src={globeIcon}
-    alt="Language"
-    className="w-5 h-5 object-contain"
-  />
-</button>
+            <button
+              onClick={() =>
+                i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
+              }
+              className="px-3 py-1 rounded bg-transparent text-white text-xs font-semibold"
+            >
+              {i18n.language === "en" ? "AR 🇸🇦" : "EN 🇬🇧"}
+            </button>
           </div>
         </header>
 
