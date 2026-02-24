@@ -102,7 +102,7 @@ useEffect(() => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0b1020]">
         <motion.img
-          src="https://res.cloudinary.com/demo/image/upload/sample.jpg"
+          src="https://res.cloudinary.com/diszilwhc/video/upload/v1771933325/whycafe.uae_01a07df291a342a0_wvuwwi.mp4"
           alt="Cafe Logo"
           className="w-44 h-44 rounded-full object-cover shadow-2xl"
           animate={{ scale: [1, 1.05, 1] }}
