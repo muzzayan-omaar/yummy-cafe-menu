@@ -15,35 +15,25 @@ export default function ItemModal({ item, onClose, categories }) {
   };
 
   const [isSpecial, setIsSpecial] = useState(item?.isSpecial || false);
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const payload = {
-      ...form,
-      price: form.price,
-      isSpecial,
-    };
-
-    const baseUrl = "https://yummy-cafe-menu-backend.onrender.com/api/menu"; // <--- use deployed backend
-
-    if (item) {
-      // Edit existing
-      await axios.put(`${baseUrl}/${item._id}`, payload, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
-      });
-    } else {
-      // Add new
-      await axios.post(baseUrl, payload, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
-      });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (item) {
+        // Edit existing
+        await axios.put(`http://localhost:5000/api/menu/${item._id}`, form, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        });
+      } else {
+        // Add new
+        await axios.post("http://localhost:5000/api/menu", form, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        });
+      }
+      onClose();
+    } catch (err) {
+      console.error(err);
     }
-
-    onClose();
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
