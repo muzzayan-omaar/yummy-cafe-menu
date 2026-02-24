@@ -97,20 +97,23 @@ useEffect(() => {
     </div>
   );
 
-  /* ===================== SPLASH ===================== */
-  if (splashVisible) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0b1020]">
-        <motion.img
-          src="https://res.cloudinary.com/diszilwhc/video/upload/v1771933325/whycafe.uae_01a07df291a342a0_wvuwwi.mp4"
-          alt="Cafe Logo"
-          className="w-44 h-44 rounded-full object-cover shadow-2xl"
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        />
-      </div>
-    );
-  }
+/* ===================== SPLASH ===================== */
+if (splashVisible) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#0b1020]">
+      <motion.video
+        src="https://res.cloudinary.com/diszilwhc/video/upload/v1771933325/whycafe.uae_01a07df291a342a0_wvuwwi.mp4"
+        autoPlay
+        muted
+        playsInline
+        loop
+        className="w-44 h-44 rounded-full object-cover shadow-2xl"
+        animate={{ scale: [1, 1.05, 1] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+      />
+    </div>
+  );
+}
 
   return (
 <div className="relative min-h-screen text-gray-900 dark:text-gray-100">
