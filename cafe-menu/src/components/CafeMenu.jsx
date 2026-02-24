@@ -125,9 +125,7 @@ if (splashVisible) {
         {/* ===================== HEADER ===================== */}
         <header className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#A7744A]/20 flex items-center justify-center">
-              <FaCoffee size={20} />
-            </div>
+
             <div>
               <h1 className="font-semibold">{t("WHY Cafe")}</h1>
               <p className="text-xs text-gray-600 dark:text-gray-300">
@@ -146,14 +144,23 @@ if (splashVisible) {
                 className="bg-white/80 dark:bg-[#1a2a44]"
               />
             </div>
-            <button
-              onClick={() =>
-                i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
-              }
-              className="px-3 py-1 rounded-full bg-[#A7744A] text-white text-xs font-semibold"
-            >
-              {i18n.language === "en" ? "AR 🇸🇦" : "EN 🇬🇧"}
-            </button>
+<button
+  onClick={() =>
+    i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
+  }
+  className="w-9 h-9 flex items-center justify-center 
+             rounded-full 
+             bg-white/80 dark:bg-[#1a2a44] 
+             border border-gray-200 dark:border-[#223555]
+             shadow-sm hover:scale-105 active:scale-95 
+             transition-all duration-200"
+>
+  <img
+    src={globeIcon}
+    alt="Language"
+    className="w-5 h-5 object-contain"
+  />
+</button>
           </div>
         </header>
 
