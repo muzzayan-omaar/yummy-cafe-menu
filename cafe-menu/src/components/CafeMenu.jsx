@@ -54,6 +54,9 @@ useEffect(() => {
   window.addEventListener("mousemove", handleMouseMove);
   return () => window.removeEventListener("mousemove", handleMouseMove);
 }, []);
+const todaysPicks = useMemo(() => {
+  return items.filter((item) => item.isSpecial);
+}, [items]);
 
 
   /* ===================== RTL SUPPORT ===================== */
@@ -148,7 +151,7 @@ if (splashVisible) {
               onClick={() =>
                 i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
               }
-              className="px-3 py-1 rounded bg-transparent text-white text-xs font-semibold"
+              className="px-3 py-1 rounded-full bg-[#efceb2] text-white text-xs font-semibold"
             >
               {i18n.language === "en" ? "AR 🇸🇦" : "EN 🇬🇧"}
             </button>
@@ -157,6 +160,41 @@ if (splashVisible) {
 
         <Greeting />
         <SpecialsTitle />
+
+        {todaysPicks.length > 0 && (
+  <div className="mt-6">
+    <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+      {todaysPicks.map((item) => (
+        <motion.div
+          key={item._id}
+          whileHover={{ scale: 1.05 }}
+          className="min-w-[220px] rounded-2xl 
+                     bg-white dark:bg-[#14233a] 
+                     border border-gray-200 dark:border-[#1f2f4a]
+                     shadow-md overflow-hidden cursor-pointer"
+          onClick={() => setSelectedItem(item)}
+        >
+          <img
+            src={item.img}
+            alt={item.name}
+            className="w-full h-36 object-cover"
+          />
+          <div className="p-3">
+            <h4 className="font-semibold text-sm">
+              {item.name}
+            </h4>
+            <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-1">
+              {item.desc}
+            </p>
+            <p className="mt-1 text-sm font-semibold text-[#A7744A]">
+              {formatPrice(item.price)}
+            </p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+)}
 
 <div className="relative flex gap-3 overflow-x-auto py-3 px-2 scrollbar-hide">
   {ALL_CATEGORIES.map((cat) => (

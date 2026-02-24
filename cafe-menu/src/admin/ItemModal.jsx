@@ -14,25 +14,39 @@ export default function ItemModal({ item, onClose, categories }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (item) {
-        // Edit existing
-        await axios.put(`http://localhost:5000/api/menu/${item._id}`, form, {
+  const [isSpecial, setIsSpecial] = useState(item?.isSpecial || false);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    // Combine form state with isSpecial checkbox
+    const payload = {
+      ...form,
+      price: form.price,
+      isSpecial,         
+    };
+
+    if (item) {
+      // Edit existing
+      await axios.put(
+        `http://localhost:5000/api/menu/${item._id}`,
+        payload,
+        {
           headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
-        });
-      } else {
-        // Add new
-        await axios.post("http://localhost:5000/api/menu", form, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
-        });
-      }
-      onClose();
-    } catch (err) {
-      console.error(err);
+        }
+      );
+    } else {
+      // Add new
+      await axios.post("http://localhost:5000/api/menu", payload, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+      });
     }
-  };
+
+    onClose();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -82,6 +96,19 @@ export default function ItemModal({ item, onClose, categories }) {
               </option>
             ))}
           </select>
+
+          <div className="flex items-center gap-2 mt-3">
+  <input
+    type="checkbox"
+    id="isSpecial"
+    checked={isSpecial}
+    onChange={(e) => setIsSpecial(e.target.checked)}
+    className="w-4 h-4 accent-[#A7744A]"
+  />
+  <label htmlFor="isSpecial" className="text-sm font-medium text-gray-900 dark:text-gray-100">
+    Mark as Today's Pick
+  </label>
+</div>
 
           <div className="flex justify-end gap-2 mt-2">
             <button
