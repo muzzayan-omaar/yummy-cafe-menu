@@ -96,7 +96,6 @@ const formatPrice = (price, lang = "en") => {
       console.error(err);
     }
   };
-  
 
   const categories = ["All", ...new Set(items.map((i) => i.category))];
   const filteredItems =
@@ -119,7 +118,7 @@ const formatPrice = (price, lang = "en") => {
 
   </div>
 
-
+  
 
 {/* Category dropdown + Add Item */}
 <div className="flex items-center gap-3 mb-6">
