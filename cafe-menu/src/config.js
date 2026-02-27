@@ -3,7 +3,7 @@
 const BACKEND_URL =
   import.meta.env.MODE === "development"
     ? "http://localhost:5000"
-    : "https://why-cafe-menu-backend.onrender.com"; // <-- replace with your real Render URL
+    : "https://yummy-cafe-menu-backend.onrender.com"; 
 
 export const API = {
   MENU: `${BACKEND_URL}/api/menu`,
