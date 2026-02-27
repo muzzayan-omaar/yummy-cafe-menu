@@ -85,18 +85,20 @@ const handleSubmit = async (e) => {
           />
 
           {/* Category select dropdown */}
-          <select
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            className="p-2 rounded bg-white/20 text-dark placeholder-white/70 outline-none caret-white"
-          >
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+<select
+  name="category"
+  value={form.category}
+  onChange={handleChange}
+  className="p-2 rounded bg-white/20 text-dark placeholder-white/70 outline-none caret-white"
+>
+  {categories
+    .filter((c) => c !== "All") // exclude "All" from adding
+    .map((cat) => (
+      <option key={cat} value={cat}>
+        {cat}
+      </option>
+    ))}
+</select>
 
           <div className="flex items-center gap-2 mt-3">
   <input
