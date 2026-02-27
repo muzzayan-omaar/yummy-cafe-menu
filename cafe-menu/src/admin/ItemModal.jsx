@@ -68,7 +68,7 @@ const handleSubmit = async (e) => {
           />
           <input
             name="description"
-            value={form.description}
+            value={form.desc}
             onChange={handleChange}
             placeholder="Description"
             className="p-2 rounded bg-white/20 text-white placeholder-white/70 outline-none caret-white"
