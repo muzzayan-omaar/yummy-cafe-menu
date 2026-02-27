@@ -6,7 +6,7 @@ export default function ItemModal({ item, onClose, categories }) {
   const [form, setForm] = useState({
     name: item?.name || "",
     img: item?.img || "",
-    description: item?.description || "",
+    desc: item?.desc || "",
     cost: item?.price || "",
     category: item?.category || (categories[0] || ""),
   });
