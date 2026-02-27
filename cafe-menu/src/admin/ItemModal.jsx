@@ -16,6 +16,7 @@ export default function ItemModal({ item, onClose, categories }) {
   };
 
   const [isSpecial, setIsSpecial] = useState(item?.isSpecial || false);
+  const [isTopSeller, setIsTopSeller] = useState(item?.isTopSeller || false);
 const handleSubmit = async (e) => {
   e.preventDefault();
 
