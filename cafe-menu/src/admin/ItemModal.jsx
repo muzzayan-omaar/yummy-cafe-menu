@@ -29,6 +29,7 @@ const handleSubmit = async (e) => {
     const payload = {
       ...form,
       isSpecial,
+        isTopSeller
     };
 
     if (item) {
@@ -107,6 +108,19 @@ const handleSubmit = async (e) => {
   <label htmlFor="isSpecial" className="text-sm font-medium text-gray-900 dark:text-gray-100">
     Mark as Today's Pick
   </label>
+
+  <div className="flex items-center gap-2 mt-2">
+  <input
+    type="checkbox"
+    id="isTopSeller"
+    checked={isTopSeller}
+    onChange={(e) => setIsTopSeller(e.target.checked)}
+    className="w-4 h-4 accent-[#A7744A]"
+  />
+  <label htmlFor="isTopSeller" className="text-sm font-medium text-gray-900 dark:text-gray-100">
+    Mark as Top Seller
+  </label>
+</div>
 </div>
 
           <div className="flex justify-end gap-2 mt-2">

@@ -11,8 +11,8 @@ const ALL_CATEGORIES = [
   "Top Seller",
   "Coffee",
   "Tea",
-  "Pastries",
-  "Sandwiches",
+  "Pizza",
+  "Starters",
   "Desserts",
   "Cold Drinks",
 ];
@@ -64,26 +64,37 @@ const todaysPicks = useMemo(() => {
     document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
   }, [i18n.language]);
 
-  /* ===================== FILTERING ===================== */
-  const filtered = useMemo(() => {
-    let res = items.filter((it) =>
-      activeCat === "All" ? true : it.category === activeCat
+const filtered = useMemo(() => {
+  let res = items;
+
+  // 🔥 Category filtering
+  if (activeCat === "Top Sellers") {
+    res = res.filter((it) => it.isTopSeller);
+  } else {
+    res = res.filter((it) => it.category === activeCat);
+  }
+
+  // 🔎 Search filtering
+  if (search.trim()) {
+    const q = search.toLowerCase();
+    res = res.filter(
+      (it) =>
+        it.name?.toLowerCase().includes(q) ||
+        it.description?.toLowerCase().includes(q)
     );
+  }
 
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      res = res.filter(
-        (it) =>
-          it.name?.toLowerCase().includes(q) ||
-          it.desc?.toLowerCase().includes(q)
-      );
-    }
+  // 💰 Sorting
+  if (sort === "price-asc") {
+    res = [...res].sort((a, b) => a.price - b.price);
+  }
 
-    if (sort === "price-asc") res = [...res].sort((a, b) => a.price - b.price);
-    if (sort === "price-desc") res = [...res].sort((a, b) => b.price - a.price);
+  if (sort === "price-desc") {
+    res = [...res].sort((a, b) => b.price - a.price);
+  }
 
-    return res;
-  }, [items, activeCat, search, sort]);
+  return res;
+}, [items, activeCat, search, sort]);
 
   const formatPrice = (amount) =>
     new Intl.NumberFormat(
@@ -161,40 +172,47 @@ if (splashVisible) {
         <Greeting />
         <SpecialsTitle />
 
-        {todaysPicks.length > 0 && (
-  <div className="mt-6">
-    <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
-      {todaysPicks.map((item) => (
+{/* ===================== TODAY'S PICKS ===================== */}
+<div className="mt-6">
+  <h2 className="text-lg font-semibold mb-3">
+    {t("Todays Picks")}
+  </h2>
+
+  <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+    {items
+      .filter((item) => item.isSpecial)
+      .map((item) => (
         <motion.div
           key={item._id}
-          whileHover={{ scale: 1.05 }}
-          className="min-w-[220px] rounded-2xl 
-                     bg-white dark:bg-[#14233a] 
-                     border border-gray-200 dark:border-[#1f2f4a]
-                     shadow-md overflow-hidden cursor-pointer"
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.98 }}
+className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.4)] cursor-pointer"
           onClick={() => setSelectedItem(item)}
+          
         >
+          {/* Background Image */}
           <img
             src={item.img}
             alt={item.name}
-            className="w-full h-36 object-cover"
+            className="w-full h-full object-cover"
           />
-          <div className="p-3">
-            <h4 className="font-semibold text-sm">
+
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+
+          {/* Bottom Left Text */}
+          <div className="absolute bottom-3 left-3 text-white">
+            <h4 className="text-sm font-semibold tracking-wide">
               {item.name}
             </h4>
-            <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-1">
-              {item.desc}
-            </p>
-            <p className="mt-1 text-sm font-semibold text-[#A7744A]">
+            <p className="text-sm font-medium opacity-90">
               {formatPrice(item.price)}
             </p>
           </div>
         </motion.div>
       ))}
-    </div>
   </div>
-)}
+</div>
 
 <div className="relative flex gap-3 overflow-x-auto py-3 px-2 scrollbar-hide">
   {ALL_CATEGORIES.map((cat) => (
