@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Edit3, Trash2 } from "lucide-react";
-import { toast, Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast"; // import toast
 import { useTranslation } from "react-i18next";
 
 import ItemModal from "./ItemModal";
@@ -14,18 +14,7 @@ export default function ItemsManager() {
 
   const { i18n } = useTranslation();
 
-  // Fixed categories that should always appear
-  const fixedCategories = [
-    "Coffee",
-    "Tea",
-    "Pizza",
-    "Starters",
-    "Desserts",
-    "Top Sellers",
-    "Cold Drinks"
-  ];
 
-  // Fetch items from backend
   useEffect(() => {
     fetchItems();
   }, []);
@@ -50,17 +39,19 @@ export default function ItemsManager() {
     setModalOpen(false);
     fetchItems();
   };
+  // Top of your file
+const formatPrice = (price, lang = "en") => {
+  const currency = lang === "ar" ? "د.إ" : "AED"; // Dirhams symbol
+  return new Intl.NumberFormat(lang === "ar" ? "ar-AE" : "en-US", {
+    style: "currency",
+    currency: "AED",
+    minimumFractionDigits: 2,
+  }).format(price);
+};
 
-  const formatPrice = (price, lang = "en") => {
-    const currency = lang === "ar" ? "د.إ" : "AED";
-    return new Intl.NumberFormat(lang === "ar" ? "ar-AE" : "en-US", {
-      style: "currency",
-      currency: "AED",
-      minimumFractionDigits: 2,
-    }).format(price);
-  };
 
   const handleDelete = async (id) => {
+    // Show toast confirmation
     const confirmDelete = await new Promise((resolve) => {
       toast(
         (t) => (
@@ -89,11 +80,15 @@ export default function ItemsManager() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`https://yummy-cafe-menu-backend.onrender.com/api/menu/${id}`, {
+      await axios.delete(`/api/menu/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       toast.success("Item deleted!", {
-        style: { background: "rgba(255, 255, 255, 0.2)", backdropFilter: "blur(10px)", color: "#fff" },
+        style: {
+          background: "rgba(255, 255, 255, 0.2)",
+          backdropFilter: "blur(10px)",
+          color: "#fff",
+        },
       });
       fetchItems();
     } catch (err) {
@@ -101,92 +96,111 @@ export default function ItemsManager() {
       console.error(err);
     }
   };
+  
 
-  // Merge fixed categories + DB categories
-  const allCategories = [...new Set([...fixedCategories, ...items.map(i => i.category)])];
-  const categories = ["All", ...allCategories];
-
+  const categories = ["All", ...new Set(items.map((i) => i.category))];
   const filteredItems =
     activeCategory === "All"
       ? items
       : items.filter((i) => i.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-white p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-3 tracking-wide">Menu Items</h2>
+<div className="min-h-screen bg-white p-6">
+  <h2 className="text-2xl font-bold text-gray-900 mb-3 tracking-wide">
+  Menu Items
+</h2>
 
-      <Toaster />
+  {/* Toaster container */}
+  <Toaster />
 
-      {/* Category dropdown + Add Item */}
-      <div className="flex items-center gap-3 mb-6">
-        <select
-          value={activeCategory}
-          onChange={(e) => setActiveCategory(e.target.value)}
-          className="px-4 py-2 rounded-lg bg-gray-100 text-gray-800 font-medium shadow focus:outline-none focus:ring-2 focus:ring-[#A7744A] transition"
-        >
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
+  {/* Header */}
+  <div className="flex justify-between items-center mb-6">
+    <h2 className="text-3xl font-bold text-white tracking-wide">Menu Items</h2>
 
-        <button
-          onClick={() => openModal()}
-          className="bg-[#A7744A] text-white px-5 py-2 rounded-lg hover:bg-[#916640] shadow-lg transition transform hover:scale-105"
-        >
-          Add Item
-        </button>
-      </div>
+  </div>
 
-      {/* Items Grid */}
-      <div className="grid grid-cols-1 gap-4">
-        {filteredItems.map((item) => (
-          <div
-            key={item._id}
-            className="flex items-center bg-white/10 backdrop-blur-md p-3 rounded-xl shadow-md hover:shadow-xl transition"
-          >
-            <div className="flex-shrink-0 relative w-28 h-20">
-              <img
-                src={item.img}
-                alt={item.name}
-                className="h-full w-full object-cover rounded-l-xl rounded-r-none"
-              />
-              <span className="absolute top-1 left-1 bg-[#A7744A]/90 text-white text-xs font-semibold px-2 py-0.5 rounded-full shadow">
-                {formatPrice(item.price, i18n.language)}
-              </span>
-            </div>
 
-            <div className="flex-1 flex flex-col justify-between ml-4">
-              <div>
-                <h4 className="font-semibold text-lg">{item.name}</h4>
-                <p className="text-sm text-gray-300 truncate">{item.desc}</p>
-              </div>
 
-              <div className="flex justify-end items-center gap-3 mt-2">
-                <Edit3
-                  size={24}
-                  className="text-blue-400 hover:text-yellow-400 p-1 cursor-pointer rounded hover:bg-white/10 transition"
-                  onClick={() => openModal(item)}
-                />
-                <Trash2
-                  size={24}
-                  className="text-red-500 hover:text-red-700 p-1 cursor-pointer rounded hover:bg-white/10 transition"
-                  onClick={() => handleDelete(item._id)}
-                />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+{/* Category dropdown + Add Item */}
+<div className="flex items-center gap-3 mb-6">
+  {/* Dropdown */}
+  <select
+    value={activeCategory}
+    onChange={(e) => setActiveCategory(e.target.value)}
+    className="px-4 py-2 rounded-lg bg-gray-100 text-gray-800 font-medium shadow focus:outline-none focus:ring-2 focus:ring-[#A7744A] transition"
+  >
+    {categories.map((cat) => (
+      <option key={cat} value={cat}>
+        {cat}
+      </option>
+    ))}
+  </select>
 
-      {modalOpen && (
-        <ItemModal
-          item={selectedItem}
-          onClose={closeModal}
-          categories={allCategories} // pass fixed + DB categories
+  {/* Add Item Button */}
+  <button
+    onClick={() => openModal()}
+    className="bg-[#A7744A] text-white px-5 py-2 rounded-lg hover:bg-[#916640] shadow-lg transition transform hover:scale-105"
+  >
+    Add Item
+  </button>
+</div>
+
+
+{/* Items Grid */}
+<div className="grid grid-cols-1 gap-4">
+  {filteredItems.map((item) => (
+    <div
+      key={item._id}
+      className="flex items-center bg-white/10 backdrop-blur-md p-3 rounded-xl shadow-md hover:shadow-xl transition"
+    >
+      {/* Left image */}
+      <div className="flex-shrink-0 relative w-28 h-20">
+        <img
+          src={item.img}
+          alt={item.name}
+          className="h-full w-full object-cover rounded-l-xl rounded-r-none"
         />
-      )}
+        {/* Price badge */}
+        <span className="absolute top-1 left-1 bg-[#A7744A]/90 text-white text-xs font-semibold px-2 py-0.5 rounded-full shadow">
+          {formatPrice(item.price, i18n.language)}
+        </span>
+      </div>
+
+      {/* Right info */}
+      <div className="flex-1 flex flex-col justify-between ml-4">
+        <div>
+          <h4 className="font-semibold text-lg">{item.name}</h4>
+          <p className="text-sm text-gray-300 truncate">{item.description}</p>
+        </div>
+
+        {/* Actions */}
+        <div className="flex justify-end items-center gap-3 mt-2">
+          <Edit3
+            size={24}
+            className="text-blue-400 hover:text-yellow-400 p-1 cursor-pointer rounded hover:bg-white/10 transition"
+            onClick={() => openModal(item)}
+          />
+          <Trash2
+            size={24}
+            className="text-red-500 hover:text-red-700 p-1 cursor-pointer rounded hover:bg-white/10 transition"
+            onClick={() => handleDelete(item._id)}
+          />
+        </div>
+      </div>
     </div>
+  ))}
+</div>
+
+
+  {/* Modal */}
+  {modalOpen && (
+    <ItemModal
+      item={selectedItem}
+      onClose={closeModal}
+      categories={categories.filter((c) => c !== "All")}
+    />
+  )}
+</div>
+
   );
 }
