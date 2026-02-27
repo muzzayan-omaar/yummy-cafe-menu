@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API } from "../config";
 
 export default function ItemModal({ item, onClose, categories }) {
   const [form, setForm] = useState({
@@ -15,25 +16,36 @@ export default function ItemModal({ item, onClose, categories }) {
   };
 
   const [isSpecial, setIsSpecial] = useState(item?.isSpecial || false);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (item) {
-        // Edit existing
-        await axios.put(`http://localhost:5000/api/menu/${item._id}`, form, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
-        });
-      } else {
-        // Add new
-        await axios.post("http://localhost:5000/api/menu", form, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
-        });
-      }
-      onClose();
-    } catch (err) {
-      console.error(err);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const token = localStorage.getItem("adminToken");
+  if (!token) {
+    alert("Not authorized");
+    return;
+  }
+
+  try {
+    const payload = {
+      ...form,
+      isSpecial,
+    };
+
+    if (item) {
+      await axios.put(`${API.MENU}/${item._id}`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } else {
+      await axios.post(API.MENU, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     }
-  };
+
+    onClose();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
