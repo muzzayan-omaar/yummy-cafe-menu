@@ -98,20 +98,18 @@ export default function ItemModal({ item, onClose, categories }) {
           />
 
           {/* Category Dropdown */}
-          <select
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            className="p-2 rounded bg-white/20 text-black outline-none caret-black"
-          >
-            {categories
-              .filter((c) => c !== "All") // Exclude "All"
-              .map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-          </select>
+<select
+  name="category"
+  value={form.category}
+  onChange={handleChange}
+  className="p-2 rounded bg-white/20 text-white outline-none caret-white"
+>
+  {allowedCategories.map((cat) => (
+    <option key={cat} value={cat}>
+      {cat}
+    </option>
+  ))}
+</select>
 
           {/* Checkboxes */}
           <div className="flex items-center gap-6 mt-3">
