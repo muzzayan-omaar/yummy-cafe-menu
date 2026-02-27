@@ -80,7 +80,7 @@ const formatPrice = (price, lang = "en") => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`https://yummy-cafe-menu-backend.onrender.com/api/menu/${id}`, {
+      await axios.delete(`/api/menu/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       toast.success("Item deleted!", {

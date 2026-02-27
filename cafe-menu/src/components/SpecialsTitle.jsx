@@ -4,6 +4,15 @@ import { useTranslation } from "react-i18next";
 export default function SpecialsTitle() {
   const { t } = useTranslation();
 
+  const isRamadan = () => {
+    // ⚠️ Set Ramadan dates manually (update yearly)
+    const ramadanStart = new Date("2026-02-17"); // example
+    const ramadanEnd = new Date("2026-03-19");   // example
+
+    const today = new Date();
+    return today >= ramadanStart && today <= ramadanEnd;
+  };
+
   const getDaySpecial = () => {
     const days = [
       "Sunday",
@@ -25,7 +34,7 @@ export default function SpecialsTitle() {
 
   return (
     <h2 className="text-lg font-semibold text-black dark:text-white mb-2">
-      {getDaySpecial()}
+      {isRamadan() ? t("Ramadan_Picks") : getDaySpecial()}
     </h2>
   );
 }

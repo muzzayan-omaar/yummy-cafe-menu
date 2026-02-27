@@ -174,9 +174,6 @@ if (splashVisible) {
 
 {/* ===================== TODAY'S PICKS ===================== */}
 <div className="mt-6">
-  <h2 className="text-lg font-semibold mb-3">
-    {t("Todays Picks")}
-  </h2>
 
   <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
     {items
