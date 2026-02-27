@@ -102,7 +102,7 @@ export default function ItemModal({ item, onClose, categories }) {
             name="category"
             value={form.category}
             onChange={handleChange}
-            className="p-2 rounded bg-white/20 text-black outline-none caret-white"
+            className="p-2 rounded bg-white/20 text-white outline-none caret-black"
           >
             {categories
               .filter((c) => c !== "All") // Exclude "All"
