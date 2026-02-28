@@ -104,7 +104,7 @@ export default function ItemModal({ item, onClose, categories }) {
   onChange={handleChange}
   className="p-2 rounded bg-white/20 text-white outline-none caret-white"
 >
-  {allowedCategories.map((cat) => (
+  {categories.map((cat) => (
     <option key={cat} value={cat}>
       {cat}
     </option>
