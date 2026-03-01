@@ -272,14 +272,11 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
                       Not Available
                     </span>
                   )}
-                <div className="w-full h-48 bg-white flex items-center justify-center">
-                                    <img
+                  <img
                     src={item.img}
                     alt={item.name}
-                    className="max-h-full max-w-full object-contain"
+                    className="w-full h-48 bg-white object-contain"
                   />
-                </div>
-
 
                   <div className="p-3">
                     <h4 className="font-semibold">{item.name}</h4>
