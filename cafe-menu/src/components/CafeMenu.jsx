@@ -235,29 +235,62 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
         {/* ===================== MENU GRID ===================== */}
         <main className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {loading
-            ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))
             : filtered.map((item) => (
-<motion.div
-  key={item._id}
-  whileHover={{ scale: 1.03, y: -4 }}
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ type: "spring", stiffness: 100, damping: 14 }}
-  className="rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a] cursor-pointer"
-  onClick={() => setSelectedItem(item)}
->
-  <img
-    src={item.img}
-    alt={item.name}
-    className="w-full h-48 object-cover"
-  />
-  <div className="p-3">
-    <h4 className="font-semibold">{item.name}</h4>
-    <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">{item.desc}</p>
-    <p className="mt-1 text-sm font-semibold">{formatPrice(item.price)}</p>
-  </div>
-</motion.div>
+                <motion.div
+                  key={item._id}
+                  whileHover={
+                    item.isAvailable !== false
+                      ? { scale: 1.03, y: -4 }
+                      : {}
+                  }
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 14,
+                  }}
+                  className={`relative rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a]
+                    ${
+                      item.isAvailable === false
+                        ? "opacity-50 grayscale cursor-not-allowed"
+                        : "cursor-pointer"
+                    }
+                  `}
+                  onClick={() => {
+                    if (item.isAvailable !== false) {
+                      setSelectedItem(item);
+                    }
+                  }}
+                >
+                  {/* Not Available Badge */}
+                  {item.isAvailable === false && (
+                    <span className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full shadow z-10">
+                      Not Available
+                    </span>
+                  )}
 
+                  <img
+                    src={item.img}
+                    alt={item.name}
+                    className="w-full h-48 object-cover"
+                  />
+
+                  <div className="p-3">
+                    <h4 className="font-semibold">{item.name}</h4>
+
+                    <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
+                      {item.desc}
+                    </p>
+
+                    <p className="mt-1 text-sm font-semibold">
+                      {formatPrice(item.price)}
+                    </p>
+                  </div>
+                </motion.div>
               ))}
         </main>
 

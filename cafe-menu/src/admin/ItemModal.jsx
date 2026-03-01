@@ -14,6 +14,9 @@ export default function ItemModal({ item, onClose, categories }) {
 
   const [isSpecial, setIsSpecial] = useState(item?.isSpecial || false);
   const [isTopSeller, setIsTopSeller] = useState(item?.isTopSeller || false);
+  const [isAvailable, setIsAvailable] = useState(
+  item?.isAvailable ?? true
+);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,6 +35,7 @@ export default function ItemModal({ item, onClose, categories }) {
         ...form,
         isSpecial,
         isTopSeller,
+          isAvailable,
       };
 
       if (item) {
@@ -144,6 +148,19 @@ export default function ItemModal({ item, onClose, categories }) {
                 Mark as Top Seller
               </label>
             </div>
+
+            <div className="flex items-center gap-2">
+  <input
+    type="checkbox"
+    id="isAvailable"
+    checked={!isAvailable}
+    onChange={(e) => setIsAvailable(!e.target.checked)}
+    className="w-4 h-4 accent-[#A7744A]"
+  />
+  <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+    Mark as Not Available
+  </label>
+</div>
           </div>
 
           {/* Buttons */}
