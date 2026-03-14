@@ -6,6 +6,7 @@ import Greeting from "./Greeting";
 import SpecialsTitle from "./SpecialsTitle";
 import { API } from "../config";
 import { useTranslation } from "react-i18next";
+import { X } from "lucide-react";
 
 const ALL_CATEGORIES = [
   "Top Seller",
@@ -333,10 +334,11 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
           </p>
         </div>
 
-        {/* Close hint */}
-        <span className="absolute top-3 right-4 text-xs text-gray-400">
-          Tap outside to close
-        </span>
+<button
+  onClick={() => setSelectedItem(null)}
+ className="absolute top-3 right-3 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 shadow-md transition">
+  <X size={18} />
+</button>
       </motion.div>
     </motion.div>
   )}
