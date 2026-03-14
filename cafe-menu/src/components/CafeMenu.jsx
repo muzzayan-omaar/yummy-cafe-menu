@@ -310,7 +310,7 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
         onClick={(e) => e.stopPropagation()}
       >
         {/* Image */}
-        <div className="w-64 h-64 overflow-hidden">
+        <div className="w-67 h-64 overflow-hidden">
           <img
             src={selectedItem.img}
             alt={selectedItem.name}
