@@ -310,7 +310,7 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
         onClick={(e) => e.stopPropagation()}
       >
         {/* Image */}
-        <div className="w-full h-64 overflow-hidden">
+        <div className="w-full h-84 overflow-hidden">
           <img
             src={selectedItem.img}
             alt={selectedItem.name}
@@ -318,7 +318,7 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
           />
         </div>
 
-        {/* Content 
+        {/* Content */}
         <div className="p-5">
           <h3 className="text-xl font-semibold tracking-tight">
             {selectedItem.name}
@@ -332,7 +332,7 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
             {formatPrice(selectedItem.price)}
           </p>
         </div>
-          */}
+
         {/* Close hint */}
         <span className="absolute top-3 right-4 text-xs text-gray-400">
           Tap outside to close
