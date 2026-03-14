@@ -232,66 +232,64 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
 
 
 
-        {/* ===================== MENU GRID ===================== */}
-        <main className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {loading
-            ? Array.from({ length: 6 }).map((_, i) => (
-                <SkeletonCard key={i} />
-              ))
-            : filtered.map((item) => (
-                <motion.div
-                  key={item._id}
-                  whileHover={
-                    item.isAvailable !== false
-                      ? { scale: 1.03, y: -4 }
-                      : {}
-                  }
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 14,
-                  }}
-                  className={`relative rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-[#14233a]
-                    ${
-                      item.isAvailable === false
-                        ? "opacity-50 grayscale cursor-not-allowed"
-                        : "cursor-pointer"
-                    }
-                  `}
-                  onClick={() => {
-                    if (item.isAvailable !== false) {
-                      setSelectedItem(item);
-                    }
-                  }}
-                >
-                  {/* Not Available Badge */}
-                  {item.isAvailable === false && (
-                    <span className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full shadow z-10">
-                      Not Available
-                    </span>
-                  )}
-                  <img
-                    src={item.img}
-                    alt={item.name}
-                    className="w-full h-48 bg-white object-contain"
-                  />
+{/* ===================== MENU GRID ===================== */}
+<main className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+  {loading
+    ? Array.from({ length: 6 }).map((_, i) => (
+        <SkeletonCard key={i} />
+      ))
+    : filtered.map((item) => (
+        <motion.div
+          key={item._id}
+          whileHover={item.isAvailable !== false ? { scale: 1.02 } : {}}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 120, damping: 16 }}
+          className={`relative flex items-center gap-4 p-3 rounded-xl shadow-md bg-gray-100 dark:bg-[#14233a]
+          ${
+            item.isAvailable === false
+              ? "opacity-50 grayscale cursor-not-allowed"
+              : "cursor-pointer"
+          }`}
+          onClick={() => {
+            if (item.isAvailable !== false) {
+              setSelectedItem(item);
+            }
+          }}
+        >
+          {/* Not Available Badge */}
+          {item.isAvailable === false && (
+            <span className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full shadow">
+              Not Available
+            </span>
+          )}
 
-                  <div className="p-3">
-                    <h4 className="font-semibold">{item.name}</h4>
+          {/* Image Left */}
+          <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-lg">
+            <img
+              src={item.img}
+              alt={item.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-                    <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
-                      {item.desc}
-                    </p>
+          {/* Content Right */}
+          <div className="flex flex-col justify-between flex-1">
+            <div>
+              <h4 className="font-semibold text-sm">{item.name}</h4>
 
-                    <p className="mt-1 text-sm font-semibold">
-                      {formatPrice(item.price)}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-        </main>
+              <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2">
+                {item.desc}
+              </p>
+            </div>
+
+            <p className="mt-2 text-sm font-semibold text-[#A7744A]">
+              {formatPrice(item.price)}
+            </p>
+          </div>
+        </motion.div>
+      ))}
+</main>
 
 {/* ===================== ITEM MODAL ===================== */}
 <AnimatePresence>
@@ -304,25 +302,29 @@ className="relative min-w-[220px] h-40 rounded-2xl overflow-hidden shadow-[0_10p
       onClick={() => setSelectedItem(null)}
     >
       <motion.div
-        className="relative bg-white/90 dark:bg-[#0b1524]/90 backdrop-blur-xl rounded-2xl overflow-hidden max-w-lg w-[92%] shadow-2xl"
+        className="relative bg-white dark:bg-[#0b1524] rounded-2xl overflow-hidden max-w-md w-[92%] shadow-2xl"
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 20 }}
         transition={{ type: "spring", stiffness: 120, damping: 18 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <img
-          src={selectedItem.img}
-          alt={selectedItem.name}
-          className="w-full h-64 object-cover"
-        />
+        {/* Image */}
+        <div className="w-full h-64 overflow-hidden">
+          <img
+            src={selectedItem.img}
+            alt={selectedItem.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
 
+        {/* Content */}
         <div className="p-5">
           <h3 className="text-xl font-semibold tracking-tight">
             {selectedItem.name}
           </h3>
 
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="mt-3 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
             {selectedItem.desc}
           </p>
 
