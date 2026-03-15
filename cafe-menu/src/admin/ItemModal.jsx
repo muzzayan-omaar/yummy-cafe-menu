@@ -153,8 +153,8 @@ export default function ItemModal({ item, onClose, categories }) {
   <input
     type="checkbox"
     id="notAvailable"
-    checked={isAvailable === false}
-    onChange={(e) => setIsAvailable(!e.target.checked)}
+    checked={!isAvailable}
+    onChange={() => setIsAvailable(!isAvailable)}
     className="w-4 h-4 accent-[#A7744A]"
   />
   <label
