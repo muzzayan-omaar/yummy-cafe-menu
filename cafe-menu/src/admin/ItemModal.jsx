@@ -37,6 +37,7 @@ export default function ItemModal({ item, onClose, categories }) {
         isTopSeller,
           isAvailable,
       };
+      console.log("PAYLOAD:", payload);
 
       if (item) {
         // Edit existing item
