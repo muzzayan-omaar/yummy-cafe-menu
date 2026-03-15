@@ -139,7 +139,9 @@ export default function ItemModal({ item, onClose, categories }) {
                 type="checkbox"
                 id="isTopSeller"
                 checked={isTopSeller}
-                onChange={(e) => setIsTopSeller(e.target.checked)}
+                onChange={(e) => {
+                  console.log("TopSeller:", e.target.checked);
+                 setIsTopSeller(e.target.checked);}}
                 className="w-4 h-4 accent-[#A7744A]"
               />
               <label
