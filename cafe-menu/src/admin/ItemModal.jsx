@@ -152,12 +152,15 @@ export default function ItemModal({ item, onClose, categories }) {
             <div className="flex items-center gap-2">
   <input
     type="checkbox"
-    id="isAvailable"
-    checked={!isAvailable}
+    id="notAvailable"
+    checked={isAvailable === false}
     onChange={(e) => setIsAvailable(!e.target.checked)}
     className="w-4 h-4 accent-[#A7744A]"
   />
-  <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+  <label
+    htmlFor="notAvailable"
+    className="text-sm font-medium text-gray-900 dark:text-gray-100"
+  >
     Mark as Not Available
   </label>
 </div>
