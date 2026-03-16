@@ -69,7 +69,7 @@ const filtered = useMemo(() => {
   let res = items;
 
   // 🔥 Category filtering
-  if (activeCat === "Top Sellers") {
+  if (activeCat === "Top Seller") {
     res = res.filter((it) => it.isTopSeller);
   } else {
     res = res.filter((it) => it.category === activeCat);
@@ -81,7 +81,7 @@ const filtered = useMemo(() => {
     res = res.filter(
       (it) =>
         it.name?.toLowerCase().includes(q) ||
-        it.description?.toLowerCase().includes(q)
+        it.desc?.toLowerCase().includes(q)
     );
   }
 
