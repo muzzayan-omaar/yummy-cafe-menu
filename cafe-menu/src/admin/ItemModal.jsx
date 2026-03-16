@@ -22,8 +22,8 @@ export default function ItemModal({ item, onClose, categories }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  if (e) e.preventDefault();
     const token = localStorage.getItem("adminToken");
     if (!token) {
       alert("Not authorized");
@@ -178,12 +178,13 @@ export default function ItemModal({ item, onClose, categories }) {
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="px-4 py-2 rounded bg-[#A7744A] hover:bg-[#8e6340] text-white transition"
-            >
-              {item ? "Save" : "Add"}
-            </button>
+<button
+  type="button"
+  onClick={handleSubmit}
+  className="px-4 py-2 rounded bg-[#A7744A] hover:bg-[#8e6340] text-white transition"
+>
+  {item ? "Save" : "Add"}
+</button>
           </div>
         </form>
       </div>
