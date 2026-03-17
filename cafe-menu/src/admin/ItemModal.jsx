@@ -56,8 +56,14 @@ const handleSubmit = async (e) => {
 
     onClose();
   } catch (err) {
-    console.error(err);
-  } finally {
+  console.error("SAVE ERROR:", err);
+
+  alert(
+    err?.response?.data?.error ||
+    err?.message ||
+    "Failed to save item"
+  );
+} finally {
     setSaving(false);
   }
 };
