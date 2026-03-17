@@ -17,6 +17,7 @@ export default function ItemModal({ item, onClose, categories }) {
   const [isAvailable, setIsAvailable] = useState(
   item?.isAvailable ?? true
 );
+const [saving, setSaving] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,38 +25,42 @@ export default function ItemModal({ item, onClose, categories }) {
 
 const handleSubmit = async (e) => {
   if (e) e.preventDefault();
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
-      alert("Not authorized");
-      return;
+
+  if (saving) return;
+
+  const token = localStorage.getItem("adminToken");
+  if (!token) {
+    alert("Not authorized");
+    return;
+  }
+
+  try {
+    setSaving(true);
+
+    const payload = {
+      ...form,
+      isSpecial,
+      isTopSeller,
+      isAvailable,
+    };
+
+    if (item) {
+      await axios.put(`${API.MENU}/${item._id}`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } else {
+      await axios.post(API.MENU, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     }
 
-    try {
-      const payload = {
-        ...form,
-        isSpecial,
-        isTopSeller,
-          isAvailable,
-      };
-      console.log("PAYLOAD:", payload);
-
-      if (item) {
-        // Edit existing item
-        await axios.put(`${API.MENU}/${item._id}`, payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      } else {
-        // Add new item
-        await axios.post(API.MENU, payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      }
-
-      onClose();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    onClose();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setSaving(false);
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -64,7 +69,7 @@ const handleSubmit = async (e) => {
           {item ? "Edit Item" : "Add Item"}
         </h3>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+<div className="flex flex-col gap-3">
           {/* Name */}
           <input
             name="name"
@@ -181,12 +186,13 @@ const handleSubmit = async (e) => {
 <button
   type="button"
   onClick={handleSubmit}
-  className="px-4 py-2 rounded bg-[#A7744A] hover:bg-[#8e6340] text-white transition"
+  disabled={saving}
+className="px-4 py-2 rounded bg-[#A7744A] hover:bg-[#8e6340] text-white transition active:scale-95"
 >
-  {item ? "Save" : "Add"}
+  {saving ? "Saving..." : item ? "Save" : "Add"}
 </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
